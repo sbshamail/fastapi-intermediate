@@ -1,15 +1,60 @@
-`curl -sSL https://install.python-poetry.org | python3 - --preview`
+# docker commands
 
-# export PATH="/home/hamail/.local/bin:$PATH"
+```
+docker ps -ls
+docker rmi <image>
+docker image prune --all --force
+```
 
-## Links
+## delete all stopped containers
 
-- `https://python-poetry.org/docs`
-- `https://github.com/panaverse/learn-generative-ai/tree/main/05_microservices_all_in_one_platform/09_create_project`
-- `https://github.com/panaverse/learn-generative-ai/tree/main/05_microservices_all_in_one_platform/10_microservice_helloworld`
+```
+docker system prune
+```
 
-- `https://fastapi.tiangolo.com/tutorial`
+## inside docker
 
-## command to run server
+```
+docker exec -it myapi-fastapi-1 /bin/sh
+ls
+poetry show
+exit
+```
 
-- `poetry run uvicorn backend.main:app --host 0.0.0.0 --port 8002`
+## docker log
+
+```
+docker logs -f <container>
+```
+
+## validate or test compose file before up
+
+```
+ docker compose config
+```
+
+## start compose
+
+```
+docker compose up -d
+```
+
+## down compose
+
+```
+docker compose down
+```
+
+## docker build rebuild the image
+
+```
+docker compose up -d --build
+```
+
+## docker compose log
+
+f means Follow the log output
+
+```
+docker compose logs -f fastapi
+```

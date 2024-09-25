@@ -1,0 +1,39 @@
+version: "1.0.0"
+
+name: ecom
+
+services:
+  authapp:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgres_db
+    ports:
+      - "9000:8000"
+    container_name: authapp-cont
+    networks:
+      - microservice-network
+    volumes:
+      - "./backend:/code" # Mount local directory to the container directory
+  postgres_db: # postgres db name
+    image: postgres:latest
+    restart: always
+    container_name: postgres-cont
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=mongodb
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+    networks:
+      - microservice-network
+
+volumes:
+  postgres_db:
+    driver: local
+networks:
+  microservice-network:
+    driver: bridge
