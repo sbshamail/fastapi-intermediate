@@ -20,7 +20,7 @@
 
 ## configure poetry that run server with uvicorn directly
 
-```
+```cli
  poetry shell
  uvicorn src.main:app --port 8002 --reload
 ```
@@ -29,7 +29,7 @@
 
 - install
 
-```
+```cli
 poetry run alembic
 poetry run alembic init migration
 
@@ -37,26 +37,53 @@ poetry run alembic init migration
 
 ## - in .env.py
 
-```
-import models
+```write in envpy
+from logging.config import fileConfig
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
+from alembic import context
+from src.lib.config import db
+from src.mvc.models.base import Base
+
+SQLALCHEMY_DATABASE_URL = db
 
 config = context.config
+config.set_main_option("sqlalchemy.url", SQLALCHEMY_DATABASE_URL)
 
-fileConfig(config.config_file_name)
+if config.config_file_name is not None:
+    fileConfig(config.config_file_name)
 
-target_metadata = models.Base.metadata
-
+target_metadata = Base.metadata
 ```
 
 ## in - alembic.ini
 
-```
+```text
 script_location = migrations
 ```
 
 ## - commands cli
 
-```
+```cli
 poetry run alembic revision --autogenerate -m "msg"
+poetry run alembic upgrade head
+```
+
+## - test
+
+```cli
+poetry add pytest #package install
+poetry run pytest
+# print is working with flag s
+poetry run pytest -s
+```
+
+## alembic recreate
+
+```cli
+rm -rf migrations/*
+rm alembic.ini
+poetry run alembic init migrations
+poetry run alembic revision --autogenerate -m "Initial migration"
 poetry run alembic upgrade head
 ```

@@ -32,7 +32,7 @@ class UpdateUserBase(BaseModel):
     password: Optional[str] = Field(None, min_length=3)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserDisplay(BaseModel):

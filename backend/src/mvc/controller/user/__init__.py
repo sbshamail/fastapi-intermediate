@@ -18,6 +18,8 @@ from .auth import (
     admin_require,
     requireRefreshToken,
     refresh_token,
+    create_access_token,
+    authenticate_user,
 )
 
 
@@ -26,7 +28,7 @@ def create(db: Session, request: UserBase):
     db_user = exist_user(db, email=request.email)
     if db_user:
         raise HTTPException(status_code=400, detail="this user already exist")
-    fields = ["username", "email", "role", "phone"]
+    fields = ["username", "email", "phone"]
     create_doc = createop(User, request, fields)
     create_doc.password = Hash.crypt(request.password)
     db.add(create_doc)
@@ -55,30 +57,30 @@ def list(
 
 
 def update(db: Session, auth: Dict[str, Any], request: UserBase):
-    print(auth["user"])
+    # print(auth["user"])
     if auth["user"] is None and auth["user"]["id"] is None:
-        raise HTTPException(status_code=404, detail="Auth Required")
+        raise HTTPException(status_code=401, detail="Auth Required")
     id = auth["user"]["id"]
 
-    item = db.query(User).filter(User.id == id).first()
+    instance = db.query(User).filter(User.id == id).first()
 
     # Update only the fields that are provided in the request
     update_fields = ["phone", "username", "email"]
-    updateOp(item, request, update_fields)
+    updateOp(instance, request, update_fields)
 
     # Commit the changes
     db.commit()
 
     # Refresh the session to get the updated item
-    db.refresh(item)
+    db.refresh(instance)
     # Return the updated item
-    return item
+    return instance
 
 
 def update_by_admin(db: Session, id: int, request: UserBase):
     item = db.query(User).filter(User.id == id).first()
     if item is None:
-        raise HTTPException(status_code=404, detail="Item not found.")
+        raise HTTPException(status_code=401, detail="Item not found.")
 
     # Update only the fields that are provided in the request
     update_fields = ["phone", "username", "email", "role_id"]

@@ -1,15 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 
 ###
 from src.mvc.router import role, user, auth
 
-# from src.lib.database import engine
+from src.lib.database import engine
 from src.mvc.models.base import Base
 
 app = FastAPI()
 
 
-@app.get("/hello")
+@app.get("/hello", status_code=status.HTTP_201_CREATED)
 async def root():
     return {"message": "Welcome to the FastAPI server!"}
 

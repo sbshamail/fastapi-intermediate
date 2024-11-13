@@ -16,6 +16,7 @@ services:
       - microservice-network
     volumes:
       - "./backend:/code" # Mount local directory to the container directory
+  # MAIN DATABASE
   postgres_db: # postgres db name
     image: postgres:latest
     restart: always
@@ -23,13 +24,29 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
-      - POSTGRES_DB=mongodb
+      - POSTGRES_DB=marketdb
     ports:
       - "5433:5432"
     volumes:
       - postgres_db:/var/lib/postgresql/data
     networks:
       - microservice-network
+
+    # TEST DATABASE CREATE
+  # postgres_test_db: # postgres db name
+  #   image: postgres:latest
+  #   restart: always
+  #   container_name: postgres-test-cont
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=123
+  #     - POSTGRES_DB=test
+  #   ports:
+  #     - "5434:5432"
+  #   volumes:
+  #     - postgres_db:/var/lib/postgresql/data
+  #   networks:
+  #     - microservice-network
 
 volumes:
   postgres_db:

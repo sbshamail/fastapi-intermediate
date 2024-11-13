@@ -24,7 +24,7 @@ def createop(model_class, request, fields):
     return instance
 
 
-def updateOp(item, request, fields):
+def updateOp(instance, request, fields):
     for field in fields:
         if hasattr(request, field) and getattr(request, field) is not None:
-            setattr(item, field, getattr(request, field))
+            setattr(instance, field, getattr(request, field))
