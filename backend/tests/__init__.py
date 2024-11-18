@@ -35,7 +35,6 @@ def db_engine():
     yield engine, SessionLocal
 
     del app.dependency_overrides[get_db]
-    Base.metadata.drop_all(bind=engine)
     engine.dispose()
 
 
@@ -44,9 +43,9 @@ def client():
     return TestClient(app)
 
 
-@pytest.fixture()
-def initiate(db_engine):
-    engine, SessionLocal = db_engine
-    Base.metadata.drop_all(bind=engine)  # Clean the database before each test
-    Base.metadata.create_all(bind=engine)  # Recreate tables
+# @pytest.fixture()
+# def initiate(db_engine):
+#     engine, SessionLocal = db_engine
+#     Base.metadata.drop_all(bind=engine)  # Clean the database before each test
+#     Base.metadata.create_all(bind=engine)  # Recreate tables
 

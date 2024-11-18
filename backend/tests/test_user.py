@@ -1,13 +1,10 @@
 
 from src.lib.hash import Hash
 from src.mvc.models.user import User
-from tests import client,db_engine,initiate
+from tests import client,db_engine
 
-
-
-
-def test_create_user_first_admin(client, db_engine):
-    engine, SessionLocal = db_engine
+#->functions
+def create_user_first_admin(client):
     response = client.post(
         "/user/create",
         json={
@@ -18,12 +15,48 @@ def test_create_user_first_admin(client, db_engine):
         },
     )
     assert response.status_code == 201  # Assert that the user is created successfully
+    return response.json()
 
-    # Validate that the first user has been assigned the "admin" role
-    with SessionLocal() as db:
-        user = db.query(User).filter_by(email="admin@gmail.com").first()
-        assert user is not None
-        assert user.role.name == "admin"  # Ensure the role is admin
+def create_user_role_default(client):
+    response = client.post(
+        "/user/create",
+        json={
+            "username": "user",
+            "email": "user@gmail.com",
+            "password": Hash.crypt("123"),
+            "phone": "03321904014",
+        },
+    )
+    assert response.status_code == 201  # Assert that the user is created successfully
+    return response.json()
+#<-function
+
+#->Test Cases
+def test_create_user_first_admin(client,db_engine):
+    response_data = create_user_first_admin(client)
+    assert "data" in response_data
+    
+    assert "id" in response_data["data"]
+    assert response_data["data"]["username"] == "admin"
+    assert response_data["data"]["email"] == "admin@gmail.com"
+    assert response_data["data"]["is_active"] is True
+    assert response_data["data"]["role_id"] == 1
+    assert response_data["data"]["role"]["name"] == "admin"
+    assert response_data["data"]["role"]["permissions"] == ["all"]
+    assert "created_at" in response_data["data"]
+    
+def test_create_user_role_default(client,db_engine):
+    response_data = create_user_role_default(client)
+    assert "data" in response_data
+    assert "id" in response_data["data"]
+    assert response_data["data"]["username"] == "user"
+    assert response_data["data"]["email"] == "user@gmail.com"
+    assert response_data["data"]["is_active"] is True
+    assert response_data["data"]["role_id"] == 2
+    assert response_data["data"]["role"]["name"] == "user"
+    assert response_data["data"]["role"]["permissions"] == ["view"]
+    assert "created_at" in response_data["data"]
+#<-Test Cases
 
  
 # @pytest.fixture()
