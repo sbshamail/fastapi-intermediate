@@ -4,8 +4,8 @@ from starlette import status
 
 from src.baseClass.categoryBase import CategoryCreate, CategoryDisplay
 from lib.database import get_db
-from src.utils.dependency import db_dependency, require_token_dependency
-from src.controller import category
+from src.lib.dependency import db_dependency, require_token_dependency
+from src.mvc.controller import category
 
 router = APIRouter(prefix="/category", tags=["category"])
 

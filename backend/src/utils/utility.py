@@ -1,11 +1,15 @@
 from datetime import datetime, timezone
-from typing import List, Optional
+from types import SimpleNamespace
+from typing import Any, Dict, List, Optional
 
 
 # [["first_name", "ahmed"], ["id", 1]] #passing data through internet only accept json or string
 # [("first_name", "ahmed"), ("id", 1)] #converting
 def extractTupleArray(data: List):
     return [tuple(sublist) for sublist in data]
+
+def dict_to_object(d: Dict[str, Any]):
+    return SimpleNamespace(**d)   
 
 
 date_formats = [

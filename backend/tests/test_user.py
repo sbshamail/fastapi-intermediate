@@ -1,155 +1,79 @@
-from typing import Annotated
-from sqlalchemy.orm.session import Session
-from fastapi import FastAPI, Depends, status
-from sqlalchemy import StaticPool, create_engine, text
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
-from fastapi.testclient import TestClient
-import pytest
-from src.lib.database import get_db
-from src.lib.config import testdb
+
 from src.lib.hash import Hash
-from src.mvc.models.role import Role
 from src.mvc.models.user import User
-from src.main import app
-from src.mvc.models.base import Base
+from tests import client,db_engine,initiate
 
 
-# Create the engine using the test database URL
-SQLALCHEMY_DATABASE_URL = testdb
-
-connection_string = str(SQLALCHEMY_DATABASE_URL).replace(
-    "postgresql", "postgresql+psycopg"
-)
-
-# Use this engine in your tests
-# engine = create_engine(
-#     SQLALCHEMY_DATABASE_URL,
-#     connect_args={"check_same_thread": False},  # SQLite-specific argument
-# )
-# engine = create_engine(connection_string, connect_args={}, pool_recycle=300)
-
-# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-# Base.metadata.create_all(bind=engine)
-
-
-# Create engine and sessionmaker for the test database
-@pytest.fixture(scope="function")
-def db_engine():
-    # Use the test database URL
-    engine = create_engine(connection_string, connect_args={}, pool_recycle=300)
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-    # Drop all tables after the test
-    Base.metadata.drop_all(bind=engine)
-    # Create all tables before the test
-    Base.metadata.create_all(bind=engine)
-
-    # Yield the engine and session to the test function
-    yield engine, SessionLocal
-
-
-# Dependency to get the database session for FastAPI
-@pytest.fixture()
-def override_get_db(db_engine):
+def test_create_user_first_admin(client, db_engine):
     engine, SessionLocal = db_engine
-
-    def _get_db():
-        db = SessionLocal()
-        try:
-            yield db
-        finally:
-            db.close()
-
-    # Override the dependency in FastAPI
-    app.dependency_overrides[get_db] = _get_db
-    yield _get_db  # Return the dependency for the test
-
-    # Reset the dependency overrides after the test
-    del app.dependency_overrides[get_db]
-
-
-# def override_get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-
-
-# Override the get_db dependency to use the test database session
-# app.dependency_overrides[get_db] = override_get_db
-
-# client = TestClient(app)
-
-
-@pytest.fixture()
-def client():
-    return TestClient(app)
-
-
-# Test database cleanup (ensure database state is reset after each test)
-# @pytest.fixture(scope="function", autouse=True)
-# def cleanup():
-#     # Reset all tables (use SQLite's own syntax for resetting tables)
-#     with engine.connect() as connection:
-#         connection.execute(text("DELETE FROM roles"))
-#         connection.execute(text("DELETE FROM users"))
-#         connection.commit()
-#     yield
-#     with engine.connect() as connection:
-#         connection.execute(text("DELETE FROM roles"))
-#         connection.execute(text("DELETE FROM users"))
-#         connection.commit()
-
-
-@pytest.fixture()
-def test_role(db_engine):
-    engine, SessionLocal = db_engine
-    db = SessionLocal()
-    # Create the role using the API's /role/create endpoint
-    role = Role(name="admin", permissions=["admin"])
-
-    db.add(role)
-    db.commit()  # Commit role to the database
-    db.refresh(role)  # Refresh to get the role's id after commit
-    yield role
-    with engine.connect() as connection:
-        connection.execute(text("DELETE FROM roles"))
-        connection.commit()
-
-
-def test_create_role(client, test_role):
     response = client.post(
-        "/role/create", json={"name": "admin", "permissions": ["admin"]}
+        "/user/create",
+        json={
+            "username": "admin",
+            "email": "admin@gmail.com",
+            "password": Hash.crypt("123"),
+            "phone": "03321904013",
+        },
     )
-    assert response.status_code == 201
-    role = test_role
-    # assert response.json() == {
-    #     "id": 18,
-    #     "name": "admin",
-    #     "permissions": ["admin"],
-    #     "created_at": role.created_at.isoformat(),
-    #     "updated_at": None,
-    # }
-    print(f"id:{role.id} name:{role.name}")
+    assert response.status_code == 201  # Assert that the user is created successfully
+
+    # Validate that the first user has been assigned the "admin" role
+    with SessionLocal() as db:
+        user = db.query(User).filter_by(email="admin@gmail.com").first()
+        assert user is not None
+        assert user.role.name == "admin"  # Ensure the role is admin
+
+ 
+# @pytest.fixture()
+# def test_role(db_engine, initiate):
+#     engine, SessionLocal = db_engine
+#     db = SessionLocal()
+#     # Create the role using the API's /role/create endpoint
+#     role = Role(name="admin", permissions=["admin"])
+
+#     db.add(role)
+#     db.commit()  # Commit role to the database
+#     db.refresh(role)  # Refresh to get the role's id after commit
+#     yield role
+#     with engine.connect() as connection:
+#         connection.execute(text("DELETE FROM roles"))
+#         connection.commit()
 
 
-def test_list_role(test_role):
-    response = client.get("/role")
-    assert response.status_code == 200
-    print(test_role)
-    # assert response.json() == [
-    #     {
-    #         "id": test_role.id,
-    #         "name": "admin",
-    #         "permissions": ["admin"],
-    #         "created_at": test_role.created_at.isoformat(),
-    #         "updated_at": None,
-    #     }
-    # ]
+# def test_list_role(client, test_role):
+#     # List all roles using the client
+#     response = client.get("/role")
+
+#     assert response.status_code == 200
+#     # assert response.json == [
+#     #     {
+#     #         "name": "admin",
+#     #         "permissions": ["admin"],
+#     #         "id": test_role.id,
+#     #         "created_at": test_role.created_at.isoformat(),
+#     #         "updated_at": None,
+#     #     }
+#     # ]
+#     roles = response.json()  # This should be a list of roles
+#     assert len(roles) > 0  # You should have at least 1 role (test_role)
+#     print(response.json()[-1])
+#     role_names = [role["name"] for role in roles]
+#     assert "admin" in role_names
+
+
+# def test_create_role(client, db_engine):
+#     engine, SessionLocal = db_engine
+#     response = client.post(
+#         "/role/create", json={"name": "admin", "permissions": ["admin"]}
+#     )
+#     assert response.status_code == 201
+
+#     # print(f"{response}")
+#     with engine.connect() as connection:
+#         connection.execute(text("DELETE FROM roles"))
+#         connection.commit()
 
 
 # json={"name": "admin", "permissions": ["admin"]}

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 from pydantic import Field, BaseModel
 
 
@@ -17,3 +17,9 @@ class RoleDisplay(BaseModel):
 
     class Config:
         from_attributes = True
+        
+        
+class ListDisplay(BaseModel):
+    data: List[RoleDisplay]
+    total: int
+

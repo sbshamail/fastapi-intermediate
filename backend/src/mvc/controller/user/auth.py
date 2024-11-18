@@ -7,14 +7,17 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm.session import Session
 
 ##
-from src.baseClass.userBase import Login
-from src.lib.database import get_db
-from src.lib.config import ACCESS_TOKEN_EXPIRE_MINUTES
+from src.mvc.models.user import User
+from src.baseClass.userBase import LoginBase,ForgetBase, ResetPasswordBase
+from src.lib.hash import Hash
+from src.lib.config import ACCESS_TOKEN_EXPIRE_MINUTES,authurl
+from src.utils.smtp import send_email
+from src.utils.utility import dict_to_object
 
-from .auth_dependency import authenticate_user, create_access_token, decode_token
+from .auth_dependency import authenticate_user, create_access_token, decode_token, exist_user
 
 
-def login(request: Login, db: Session = Depends(get_db)):
+def login( db: Session ,request: LoginBase,):
     user = authenticate_user(request.email, request.password, db)
     if not user:
         raise HTTPException(
@@ -48,7 +51,54 @@ def login(request: Login, db: Session = Depends(get_db)):
             "exp": exp_time.isoformat(),
         }
     )
+    
+# Function to handle forget password
+def forget(db:Session,request:ForgetBase,):
+    user = exist_user(db, email=request.email)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Email not found"
+        )
+    reset_token = create_access_token(
+        user_data={"email": user.email, "id": user.id},
+        refresh=True,
+        expiry=timedelta(minutes=30),
+    )
+     # Create a reset URL
+    reset_url = f"{authurl}/reset-password?token={reset_token}"
+        
+     # Send the reset email
+    subject = "Password Reset Request"
+    body = f"Hello, \n\nTo reset your password, click the following link: {reset_url}\n\nIf you didn't request this, please ignore this email."
+    
+    
+    send_email(subject, body, user.email)
 
+    return JSONResponse(
+        content={"message": "Password reset email sent. Please check your inbox."}
+    )
+    
+    
+
+# Function to reset the user's password (you'll need a reset password endpoint)
+def reset_password( db: Session,user_reset_entry: Dict[str, Any],request: ResetPasswordBase):
+    user =user_reset_entry["user"]
+    user = dict_to_object(user)
+    print(user)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    user_email = user.email  # Accessing email as an attribute
+    print(user_email)
+    instance = db.query(User).filter(User.id == user.id).first()
+    instance.password = Hash.crypt(request.new_password)  # Assuming you have a hash_password function
+  
+    db.commit()
+
+    # # Remove the used reset token from the database
+    # # db.delete(reset_entry)
+    # # db.commit()
+
+    return JSONResponse(content={"message": "Password successfully reset"})
 
 class RequireTokenClass(HTTPBearer):
     def __init__(self, auto_error=True):

@@ -43,6 +43,8 @@ docker compose up -d
 
 ```
 docker compose down
+# -v remove competely
+docker compose down -v
 ```
 
 ## docker build rebuild the image

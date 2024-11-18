@@ -11,7 +11,7 @@ class User(TimeStampedModel, Base):
     password = Column(String, nullable=False)
     phone = Column(String(11), unique=True, nullable=True)
     is_active = Column(Boolean, default=True)
-    role_id = Column(Integer, ForeignKey("roles.id"), default=1)  # dynamic add roles
+    role_id = Column(Integer, ForeignKey("roles.id"))  # dynamic add roles
     role = relationship(
         "Role", back_populates="users", uselist=False
     )  # Indicates one-to-one

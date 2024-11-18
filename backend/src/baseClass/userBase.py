@@ -1,5 +1,5 @@
-from typing import Any, List, Optional
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from typing import Any, List, Optional, Union
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator, root_validator
 from datetime import datetime
 from src.baseClass.roleBase import RoleDisplay
 
@@ -20,10 +20,27 @@ class UserBase(BaseModel):
         return v
 
 
-class Login(BaseModel):
+class LoginBase(BaseModel):
     email: str
     password: str
 
+class ForgetBase(BaseModel):
+    email: str
+    
+class ResetPasswordBase(BaseModel):
+    new_password: Optional[str] = Field(None, min_length=3)
+    password_match:Optional[str] = Field(None, min_length=3)
+     # Root validator to ensure that the new_password and password_match match
+    @model_validator(mode='before')
+    def check_password_match(cls, values):
+        new_password = values.get('new_password')
+        password_match = values.get('password_match')
+
+        # Check if the passwords match
+        if new_password != password_match:
+            raise ValueError('Passwords do not match')
+
+        return values
 
 class UpdateUserBase(BaseModel):
     username: Optional[str] = Field(None, min_length=3)
@@ -49,7 +66,9 @@ class UserDisplay(BaseModel):
     class Config:
         from_attributes = True
 
+class ResponseBase(BaseModel):
+    data: Union[List[UserDisplay], UserDisplay]
+    message: str = "ok"
+    total: Optional[int]=1
+    
 
-class ListDisplay(BaseModel):
-    data: List[UserDisplay]
-    total: int

@@ -25,5 +25,24 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
-db = "postgresql://postgres:123@localhost:5432/marketdb"
-testdb = "postgresql://postgres:123@localhost:5432/test"
+#-> db
+db = os.getenv("db")
+testdb = os.getenv("testdb")
+# db = "postgresql://postgres:123@localhost:5432/marketdb"
+# testdb = "postgresql://postgres:123@localhost:5432/testdb"
+#<-db
+#-> smtp
+app_password_gmail=os.getenv("app_password_gmail")
+sender_email=os.getenv("sender_email")
+smtp_gmail_port=os.getenv("smtp_gmail_port")
+#<-smtp
+#-> app urls
+authurl=os.getenv("authurl")
+clienturl=os.getenv("clienturl")
+#<-app urls
+
+
+
+
+
+

@@ -2,7 +2,7 @@ from typing import Annotated, Any, Dict
 
 from fastapi import Depends
 from sqlalchemy.orm.session import Session
-from src.mvc.controller.user import require_token, admin_require, requireRefreshToken
+from src.mvc.controller.user.auth import require_token, admin_require, requireRefreshToken
 
 from src.lib.database import get_db
 
