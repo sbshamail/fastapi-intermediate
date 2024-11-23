@@ -21,7 +21,7 @@ def login( db: Session ,request: LoginBase,):
     user = authenticate_user(request.email, request.password, db)
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Invalid credentials"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
         )
     role = {
         "id": user.role.id,

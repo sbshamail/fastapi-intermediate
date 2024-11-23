@@ -37,7 +37,7 @@ def updateUser(
 def pipeline(
     auth: require_admin,
     db: db_dependency,
-    searchTerm: Optional[str] = None,
+    searchTerm: Optional[str] = Query(None),
     columnSearchTerms: Optional[str] = Query(None),
     dateRange: Optional[str] = Query(None),
     skip: Optional[int] = Query(0),
@@ -54,7 +54,7 @@ def pipeline(
 
 
 # ADMIN
-@router.get("/read/", status_code=status.HTTP_200_OK,response_model=ResponseBase)
+@router.get("/read", status_code=status.HTTP_200_OK,response_model=ResponseBase)
 def read(
     auth: require_admin,
     db: Session = Depends(get_db),
@@ -66,7 +66,7 @@ def read(
 
 
 # ADMIN
-@router.get("/read_many/", response_model=ResponseBase)
+@router.get("/read_many", response_model=ResponseBase)
 def read(
     auth: require_admin,
     ids: str = Query(str),
@@ -83,5 +83,5 @@ def delete(auth: require_admin, db: db_dependency, id: int):
 
 # ADMIN
 @router.delete("/delete_many")
-def delete_many(ids: List[int], auth: require_admin, db: db_dependency):
+def delete_many(auth: require_admin,db: db_dependency,ids:str=Query(str) ):
     return user.deleteMany(db, ids)

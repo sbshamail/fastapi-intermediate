@@ -16,6 +16,21 @@ services:
       - microservice-network
     volumes:
       - "./backend:/code" # Mount local directory to the container directory
+
+  clientapp:
+    build:
+      context: ./clientapp
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - authapp
+    ports:
+      - "4000:3000"
+    container_name: clientapp-cont
+    networks:
+      - microservice-network
+    volumes:
+      - "./clientapp:/code" # Mount local directory to the container directory
+
   # MAIN DATABASE
   postgres_db: # postgres db name
     image: postgres:latest

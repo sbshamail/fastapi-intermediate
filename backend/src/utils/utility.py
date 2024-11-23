@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional
 # [["first_name", "ahmed"], ["id", 1]] #passing data through internet only accept json or string
 # [("first_name", "ahmed"), ("id", 1)] #converting
 def extractTupleArray(data: List):
+    print(data)
     return [tuple(sublist) for sublist in data]
 
 def dict_to_object(d: Dict[str, Any]):

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 44,
+    "title": "Classic Blue Suede Casual Shoes",
+    "price": 39,
+    "salePrice": 37,
+    "featured": true,
+    "quota": 4,
+    "sale": true,
+    "reviews": 1,
+    "rating": 3.2,
+    "description": "Step into comfort with our Classic Blue Suede Casual Shoes, perfect for everyday wear. These shoes feature a stylish blue suede upper, durable rubber soles for superior traction, and classic lace-up fronts for a snug fit. The sleek design pairs well with both jeans and chinos, making them a versatile addition to any wardrobe.",
+    "images": [
+      "https://i.imgur.com/sC0ztOB.jpeg",
+      "https://i.imgur.com/Jf9DL9R.jpeg",
+      "https://i.imgur.com/R1IN95T.jpeg"
+    ],
+    "creationAt": "2024-07-21T03:45:06.000Z",
+    "updatedAt": "2024-07-21T03:45:06.000Z",
+    "categoryLink": "Shoes",
+    "category": {
+      "id": 4,
+      "name": "Shoes",
+      "image": "https://i.imgur.com/qNOjJje.jpeg",
+      "creationAt": "2024-07-21T03:45:06.000Z",
+      "updatedAt": "2024-07-21T03:45:06.000Z"
+    },
+    "quantity": 1
+  },
+  {
+    "id": 50,
+    "title": "Trendy Pink-Tinted Sunglasses",
+    "price": 38,
+    "featured": true,
+    "quota": 4,
+    "reviews": 28,
+    "rating": 4.5,
+    "description": "Step up your style game with these fashionable black-framed, pink-tinted sunglasses. Perfect for making a statement while protecting your eyes from the glare. Their bold color and contemporary design make these shades a must-have accessory for any trendsetter looking to add a pop of color to their ensemble.",
+    "images": [
+      "https://i.imgur.com/0qQBkxX.jpg",
+      "https://i.imgur.com/I5g1DoE.jpg",
+      "https://i.imgur.com/myfFQBW.jpg"
+    ],
+    "creationAt": "2024-07-21T03:45:06.000Z",
+    "updatedAt": "2024-07-21T03:45:06.000Z",
+    "categoryLink": "Miscellaneous",
+    "category": {
+      "id": 5,
+      "name": "Miscellaneous",
+      "image": "https://i.imgur.com/BG8J0Fj.jpg",
+      "creationAt": "2024-07-21T03:45:06.000Z",
+      "updatedAt": "2024-07-21T03:45:06.000Z"
+    },
+    "quantity": 1
+  }
+]

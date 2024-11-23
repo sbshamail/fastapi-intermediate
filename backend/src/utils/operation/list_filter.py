@@ -5,7 +5,7 @@ from sqlalchemy import and_, or_
 from src.utils.utility import extractTupleArray, parse_date
 from sqlalchemy.orm.query import Query
 from sqlalchemy.orm.session import Session
-
+import ast
 
 def filter_by_data_range(
     Model,
@@ -24,7 +24,6 @@ def filter_by_data_range(
                 hour=23, minute=59, second=59, microsecond=999999
             )
 
-        print(start_date, end_date)
         return query.filter(and_(data_column >= start_date, data_column <= end_date))
     elif start_date_str and end_date_str is None:
         start_date = parse_date(start_date_str)
@@ -64,8 +63,8 @@ def filter_by_global_search_terms(
     for column_name in str_search_terms:
         # column = Model[column_name] # not work because it is class object
         column = getattr(Model, column_name)
+        
         global_search_filters.append(column.like(f"%{search_term}%"))
-
     return query.filter(or_(*global_search_filters))
 
 
@@ -85,6 +84,7 @@ def apply_filters(
         query = filter_by_global_search_terms(
             Model, query, str_search_terms, search_term
         )
+   
     if number_range:
         column_name, min_value, max_value = number_range
         query = filter_by_number_range(Model, query, column_name, min_value, max_value)
@@ -114,23 +114,22 @@ def listop(db: Session, Model, filters: dict[str, any], skip: int = 0, limit: in
     return {"data": result, "total": total_count}
 
 
-def filterRefactoring(searchTerm: str, columnSearchTerms: List, dateRange: List):
+def filterRefactoring(searchTerm: str, columnSearchTerms: List[tuple], dateRange: List[str],searchTermFields:List[str]=[]):
     columnFilters = []
     date_range: tuple = None
-
+    
     if columnSearchTerms:
-        terms = json.loads(columnSearchTerms)  # parse
-        columnFilters = extractTupleArray(terms)
+        parsed_terms =  ast.literal_eval(columnSearchTerms)  # list tuple parse
+        columnFilters = extractTupleArray(parsed_terms)
     if dateRange:
         dateRangeParse = json.loads(dateRange)
         date_range = tuple(dateRangeParse)
-
     filters = {
-        "column_search_terms": columnFilters,  # accept tupple in array [("first_name", "string"), ("id", 1)],
+        "column_search_terms": columnFilters,  # accept tupple in array , sample [("username", "test"), ("id", 1)],
         "search_term": searchTerm,
-        "str_search_terms": ["username", "email", "phone"],  # for search term
+        "str_search_terms": searchTermFields,  # global search term field
         # "number_range": ("id", 1, 10),
-        "date_range": date_range,
+        "date_range": date_range, #sample ["created_at","19-11-2024","19-11-2024"]
     }
     return filters
 

@@ -1,3 +1,4 @@
+
 import json
 from typing import Any, Dict, List, Optional
 from fastapi import HTTPException
@@ -26,7 +27,8 @@ def first_user_create_role(db: Session,user):
         db.flush()  # Make sure the admin role has an ID before proceeding
         # Assign the "admin" role to the user being created
         role_id = admin_role.id
-        user.id = 1
+        # user.id = 1
+        
     else:
         # Assign the default role (if it's not the first user)
         role_id = 2
@@ -38,7 +40,7 @@ def create(db: Session, request: UserBase):
     if db_user:
         raise HTTPException(status_code=400, detail="this user already exist")
 
-    fields = ["username", "email", "phone"]
+    fields = ["id","username", "email", "phone"]
     create_doc = createop(User, request, fields)
     create_doc.password = Hash.crypt(request.password)
     # Assign the role_id (either admin or default)
@@ -66,13 +68,13 @@ def list(
     skip: int,
     limit: int,
 ):
-    filters = filterRefactoring(searchTerm, columnSearchTerms, dateRange)
+    searchTermFields=["username", "email", "phone"]
+    filters = filterRefactoring(searchTerm, columnSearchTerms, dateRange,searchTermFields)
     results = listop(db, User, filters, skip, limit)
     return results
 
 
 def update(db: Session, auth: Dict[str, Any], request: UserBase):
-    # print(auth["user"])
     if auth["user"] is None and auth["user"]["id"] is None:
         raise HTTPException(status_code=401, detail="Auth Required")
     id = auth["user"]["id"]
@@ -82,7 +84,8 @@ def update(db: Session, auth: Dict[str, Any], request: UserBase):
     # Update only the fields that are provided in the request
     update_fields = ["phone", "username", "email"]
     updateOp(instance, request, update_fields)
-
+    if(request.password):
+         instance.password = Hash.crypt(request.password)
     # Commit the changes
     db.commit()
 
@@ -153,12 +156,13 @@ def delete(db: Session, id: int):
         raise HTTPException(status_code=404, detail="Item not found.")
     db.delete(item)
     db.commit()
-    return {"detail": f"Delete User Sucessfully where id is {item.id}"}
+    return {"message": f"Delete User Sucessfully where id is {item.id}"}
 
 
 def deleteMany(db: Session, ids: List[int]):
+    parse_ids = json.loads(ids)
     deleted_count = (
-        db.query(User).filter(User.id.in_(ids)).delete(synchronize_session=False)
+        db.query(User).filter(User.id.in_(parse_ids)).delete(synchronize_session=False)
     )
 
     if deleted_count == 0:
@@ -166,4 +170,4 @@ def deleteMany(db: Session, ids: List[int]):
 
     db.commit()  # Commit the transaction
 
-    return {"deleted_count": deleted_count, "detail": "Users deleted successfully"}
+    return {"deleted_count": deleted_count, "message": "Users deleted successfully"}
