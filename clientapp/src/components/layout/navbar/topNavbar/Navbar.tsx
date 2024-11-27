@@ -1,5 +1,4 @@
 import { Screen } from '@/utils/overlayer';
-import MainSearchbar from '../../../@cui/searchbar/MainSearchbar';
 import NavCartButton from '@/components/action/navCartButton/NavCartButton';
 import RouteIcon from '@/components/action/RouteIcon/RouteIcon';
 import Account from '@/components/action/account/Account';
@@ -28,7 +27,7 @@ const Navbar = () => {
         <Screen>
           <div className="w-full flex items-center justify-between space-x-4 md:space-x-10">
             <div className="flex items-center">
-              <div className=" md:hidden">
+              <div className="md:hidden">
                 <MenuDrawer>
                   <Iconify
                     icon="material-symbols:menu"

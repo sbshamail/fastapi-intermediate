@@ -1,4 +1,5 @@
 import React from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   props?: React.ComponentPropsWithoutRef<'div'>;
@@ -15,11 +16,12 @@ const Card = ({ children, className, space, ...props }: Props) => {
   } else if (space === '2') {
     spacing = 'p-6 py-12';
   }
+  const mergedClassName = twMerge(
+    ` bg-card text-card-foreground border-t-[0.1px]  border-border rounded-lg shadow shadow-border ${spacing}`,
+    className
+  );
   return (
-    <div
-      className={` bg-card text-card-foreground border-t-[0.1px]  border-border rounded-lg shadow shadow-border ${spacing}  ${className}`}
-      {...props}
-    >
+    <div className={`${mergedClassName}`} {...props}>
       {children}
     </div>
   );

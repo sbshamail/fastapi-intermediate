@@ -13,7 +13,7 @@ const MidNavbar = async () => {
 
   return (
     <Screen>
-      <div className="flex justify-between items-center ">
+      <div className="flex justify-between items-center">
         <div className="max-w-3/12">
           {/* small screen categories*/}
           <CategoriesDrawer categories={categories}>

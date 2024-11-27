@@ -24,7 +24,13 @@ const HeaderClientLayout = ({ children }: ChildrenTypes) => {
           >
             <Topbar />
           </div>
-          <Shadow className="bg-background/90">{children}</Shadow>
+
+          {/*we apply this condition on this bcz of child div backdrop should work like for modal or drawer*/}
+          <Shadow
+            className={`bg-background/90 ${condition ? '' : 'backdrop-blur-none'}`}
+          >
+            {children}
+          </Shadow>
         </div>
       </div>
     </div>

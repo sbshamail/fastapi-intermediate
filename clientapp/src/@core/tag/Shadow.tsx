@@ -18,11 +18,11 @@ const Shadow = ({ children, className, space, style, ...props }: Props) => {
     spacing = 'p-6 py-12';
   }
   const mergedClassName = twMerge(
-    `backdrop-blur-md bg-accent/60 text-card-foreground shadow shadow-border ${spacing}`,
+    `backdrop-blur-md bg-accent/90 text-card-foreground shadow shadow-border ${spacing}`,
     className
   );
   return (
-    <div className={mergedClassName} style={style} {...props}>
+    <div className={`${mergedClassName}`} style={style} {...props}>
       {children}
     </div>
   );

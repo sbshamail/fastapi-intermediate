@@ -1,5 +1,6 @@
 'use client';
 import React, { ChangeEvent, KeyboardEvent, FC } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   label?: string;
@@ -23,6 +24,9 @@ interface Props {
   inputSize?: '0' | '1' | '2' | '3';
   rows?: number;
   id?: string;
+  // For React Hook Form compatibility
+  register?: any;
+  errors?: any;
 }
 const TextField: FC<Props> = ({
   id,
@@ -44,6 +48,9 @@ const TextField: FC<Props> = ({
   size,
   inputSize,
   rows = 4,
+  // For React Hook Form compatibility
+  register,
+  errors,
 }) => {
   let InputSize = 'py-2';
   if (inputSize === '0') {
@@ -55,42 +62,49 @@ const TextField: FC<Props> = ({
   } else if (inputSize === '3') {
     InputSize = 'py-3';
   }
+
+  let inputProps = {
+    id,
+    name,
+    placeholder,
+    value,
+    defaultValue,
+    onChange,
+    onKeyDown,
+    className,
+    type,
+    maxLength: maxlength,
+    max,
+    min,
+    minLength,
+    size,
+    rows,
+  };
+  // register is react hook field
+  register ? (inputProps = { ...inputProps, ...register(name) }) : inputProps;
+  const mergedClassName = twMerge(
+    `${InputSize} outline-none bordering ${errors && name && errors[name] && 'border !border-red-500'}`,
+    className
+  );
   return (
-    <div className="flex items-start flex-col">
-      {label && (
-        <label>
-          {label} &nbsp;
-          {required && <span>*</span>}
-        </label>
-      )}
-      <>
-        {textarea ? (
-          <textarea
-            className={`${InputSize} ${className} outline-none bordering`}
-            placeholder={placeholder}
-            onChange={onChange}
-            rows={rows}
-            maxLength={maxlength}
-          />
-        ) : (
-          <input
-            id={id}
-            maxLength={maxlength}
-            max={max}
-            min={min}
-            size={size}
-            minLength={minLength}
-            type={type}
-            onKeyDown={onKeyDown}
-            value={value}
-            defaultValue={defaultValue}
-            className={`py-2 ${inputSize} ${className}  outline-none bordering`}
-            placeholder={placeholder}
-            onChange={onChange}
-          />
+    <>
+      <div className="flex items-start flex-col">
+        {label && (
+          <label>
+            {label} &nbsp;
+            {required && <span>*</span>}
+          </label>
         )}
-      </>
-    </div>
+        {textarea ? (
+          <textarea {...inputProps} className={`${mergedClassName}`} />
+        ) : (
+          <input {...inputProps} className={`${mergedClassName} `} />
+        )}
+        {errors && name && errors[name] && (
+          <p className="text-red-500 m-0 p-0 text-sm">{`${errors[name].message}`}</p>
+        )}
+      </div>
+    </>
   );
 };
 

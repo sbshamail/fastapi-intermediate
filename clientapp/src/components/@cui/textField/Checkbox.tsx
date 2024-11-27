@@ -20,14 +20,12 @@ const Checkbox: FC<Props> = ({ checked = false, onChange, className }) => {
     }
   };
   return (
-    <div>
-      <input
-        className={`cursor-pointer checkbox ${className} `}
-        type="checkbox"
-        checked={checked}
-        onChange={handleChange}
-      />
-    </div>
+    <input
+      className={`cursor-pointer checkbox ${className} `}
+      type="checkbox"
+      checked={checked}
+      onChange={handleChange}
+    />
   );
 };
 

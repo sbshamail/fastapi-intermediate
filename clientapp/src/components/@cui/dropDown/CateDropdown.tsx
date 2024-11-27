@@ -57,7 +57,7 @@ const CateDropdown: FC<Props> = ({
           )}
         </PopOverTrigger>
         <PopOverContent>
-          <Shadow space="0" className=" relative  ">
+          <Shadow space="0" className="relative">
             <div className="flex flex-col max-h-80 overflow-auto">
               {contents &&
                 contents?.length > 0 &&

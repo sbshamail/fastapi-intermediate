@@ -6,15 +6,15 @@ const baseButtonClasses =
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ';
 
 const primaryClasses: className =
-  'bg-primary text-primary-foreground hover:bg-primary/90 duration-150';
+  'bg-primary text-primary-foreground hover:bg-primary/90 Transition';
 const secondaryClasses: className =
-  'bg-secondary text-secondary-foreground hover:bg-secondary/80 duration-150';
+  'bg-secondary text-secondary-foreground hover:bg-secondary/80 Transition';
 const dangerClasses: className =
-  'bg-destructive text-destructive-foreground hover:bg-destructive/80 duration-150';
+  'bg-destructive text-destructive-foreground hover:bg-destructive/80 Transition';
 const successClasses: className =
-  'bg-green-600 text-primary-foreground hover:bg-green-500 duration-150';
+  'bg-green-600 text-primary-foreground hover:bg-green-500 Transition';
 const warningClasses: className =
-  'bg-amber-600 text-primary-foreground hover:bg-amber-600/90 duration-150';
+  'bg-amber-600 text-primary-foreground hover:bg-amber-600/90 Transition';
 
 // Utility function to get the merged classes for a button variant
 const getButtonClasses = (
@@ -53,9 +53,9 @@ const Button: FC<Props> = ({
 }) => {
   let sizeClassName = '';
   if (size === '1') {
-    sizeClassName = 'px-4 !p-1';
+    sizeClassName = 'px-4 p-1';
   } else if (size === '2') {
-    sizeClassName = 'px-4 !p-2';
+    sizeClassName = 'px-4 p-2';
   } else if (size === '3') {
     sizeClassName = 'px-4 py-3';
   }

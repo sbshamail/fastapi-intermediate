@@ -1,7 +1,12 @@
 'use client';
-import React from 'react';
-import IconDropdown, { ContentItem } from '../../@cui/dropDown/IconDropdown';
+import React, { useState } from 'react';
+import IconDropdown, { ContentItem } from '@cui/dropDown/IconDropdown';
+import LoginModalCard from '@/components/@cui/modalsCard/LoginModalCard';
 const Account = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleModal = (b: boolean) => {
+    setIsModalOpen(b);
+  };
   const contents: ContentItem[] = [
     {
       title: 'My Account',
@@ -13,16 +18,24 @@ const Account = () => {
       icon: 'material-symbols:logout',
       click: () => console.log('Logout Clicked'),
     },
+    {
+      title: 'Login',
+      icon: 'material-symbols:Login',
+      click: () => handleModal(true),
+    },
   ];
   return (
-    <div className="flex">
-      <IconDropdown
-        icon="material-symbols:person-outline"
-        title="Muhammad"
-        contents={contents}
-        style="dropdown"
-      />
-    </div>
+    <>
+      <LoginModalCard open={isModalOpen} handleModal={handleModal} />
+      <div className="flex">
+        <IconDropdown
+          icon="material-symbols:person-outline"
+          title="Muhammad"
+          contents={contents}
+          style="dropdown"
+        />
+      </div>
+    </>
   );
 };
 
