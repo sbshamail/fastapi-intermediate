@@ -6,10 +6,11 @@ from sqlalchemy.orm import relationship
 class User(TimeStampedModel, Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, nullable=False)
-    username = Column(String, unique=True, nullable=False)
+    email = Column(String, unique=True, nullable=True)
+    firstname = Column(String(20), nullable=False)
+    lastname = Column(String(20), nullable=True)
     password = Column(String, nullable=False)
-    phone = Column(String(11), unique=True, nullable=True)
+    phone = Column(String(11), unique=True, nullable=False)
     is_active = Column(Boolean, default=True)
     role_id = Column(Integer, ForeignKey("roles.id"))  # dynamic add roles
     role = relationship(

@@ -25,11 +25,12 @@ def user_initiate(db_engine,initiate):
 
     db.commit()  # Commit the roles to the database
     # create admin user
-    admin_user = db.query(User).filter(User.username == "admin").first()
+    admin_user = db.query(User).filter(User.email == "admin@gmail.com").first()
     if not admin_user:
         admin_create = User(
             id=1, 
-            username="admin", 
+            firstname="admin",
+            lastname="khan", 
             email="admin@gmail.com",  # Set a real email or an empty one if needed
             password=Hash.crypt("123"),  # Hash the password
             phone="03321904013", 
@@ -37,11 +38,11 @@ def user_initiate(db_engine,initiate):
          )
         db.add(admin_create)
     # create default user
-    default_user = db.query(User).filter(User.username == "user").first()
+    default_user = db.query(User).filter(User.email == "user@gmail.com").first()
     if not default_user:
         user_create = User(
             id=2, 
-            username="user", 
+            firstname="user", 
             email="user@gmail.com",  # Set a real email or an empty one if needed
             password=Hash.crypt("123"),  # Hash the password
             phone="03321904023", 
@@ -49,11 +50,11 @@ def user_initiate(db_engine,initiate):
         )
         db.add(user_create)
     # create test user
-    test_user = db.query(User).filter(User.username == "test").first()
+    test_user = db.query(User).filter(User.email == "test@gmail.com").first()
     if not test_user:
         test_user_create = User(
             id=3, 
-            username="test", 
+            firstname="test", 
             email="test@gmail.com",  # Set a real email or an empty one if needed
             password=Hash.crypt("123"),  # Hash the password
             phone="03321904021", 
@@ -79,9 +80,9 @@ def recreate_auth_initiate(db_engine, user_initiate):
     # Check if roles and users exist in the DB
     admin_role = db.query(Role).filter(Role.name == "admin").first()
     user_role = db.query(Role).filter(Role.name == "user").first()
-    admin_user = db.query(User).filter(User.username == "admin").first()
-    default_user = db.query(User).filter(User.username == "user").first()
-    test_user = db.query(User).filter(User.username == "test").first()
+    admin_user = db.query(User).filter(User.firstname == "admin").first()
+    default_user = db.query(User).filter(User.firstname == "user").first()
+    test_user = db.query(User).filter(User.firstname == "test").first()
     
     # If any required entity is missing, ensure that the user setup fixture runs
     if not all([admin_role, user_role, admin_user, default_user, test_user]):
@@ -106,11 +107,12 @@ def login_as_admin(client,db_engine):
     engine, SessionLocal = db_engine
     db = SessionLocal()
     
-    admin_user = db.query(User).filter(User.username == "admin").first()
+    admin_user = db.query(User).filter(User.email == "admin@gmail.com").first()
     if not admin_user:
         admin_create = User(
             id=1, 
-            username="admin", 
+            firstname="admin", 
+            lastname="khan", 
             email="admin@gmail.com",  # Set a real email or an empty one if needed
             password=Hash.crypt("123"),  # Hash the password
             phone="03321904013", 
@@ -157,7 +159,7 @@ def update_user(client,headers):
         "/user/update",
         headers=headers,
         json={
-            "username": "user",
+            "firstname": "user",
             "email": "user@gmail.com",
             # "password": Hash.crypt("123"),
             "phone": "03321901224",
@@ -171,7 +173,7 @@ def update_user_by_admin(client,headers):
         "/user/update_by_admin?id=3",
         headers=headers,
         json={
-            "username": "test",
+            "firstname": "test",
             "email": "test1@gmail.com",
             "password": Hash.crypt("123"),
             "phone": "03321901220",
@@ -182,7 +184,7 @@ def update_user_by_admin(client,headers):
 
 def read_user_by_admin(client,headers):
     response = client.get(
-        "/user/read?id=2&email=user@gmail.com&username=user ",
+        "/user/read?id=2&email=user@gmail.com&firstname=user ",
         headers=headers,
     )
    
@@ -191,7 +193,7 @@ def read_user_by_admin(client,headers):
 
 def read_user_by_wrong_admin(client,headers):
     response = client.get(
-        "/user/read?id=2&email=user@gmail.com&username=user ",
+        "/user/read?id=2&email=user@gmail.com&firstname=user ",
         headers=headers,
     )
    

@@ -55,7 +55,7 @@ def test_list_user_by_filter(client, login_as_admin):
     }
     # Call the endpoint with the Bearer token
     response = client.get(
-        "/user?searchTerm=admin@gmail.com&columnSearchTerms=[('username', 'admin'), ('id', 1)]",
+        "/user?searchTerm=admin@gmail.com&columnSearchTerms=[('firstname', 'admin'), ('id', 1)]",
         headers=headers,
     )
 

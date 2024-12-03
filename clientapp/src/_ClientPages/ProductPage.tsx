@@ -1,12 +1,14 @@
 'use client';
+import React, { Suspense, useEffect, useState } from 'react';
+import useQuery from '@/@core/customHooks/useQuery';
+import { Space } from '@/app/overlayer';
+// components
 import ProductInfiniteScroll from '@/components/infinitScroll/ProductInfinitScroll';
 import SortByPrice from '@/components/action/filter/SortByPrice';
 import ProductFilterSidebar from '@/components/sidebar/ProductFilterSidebar';
 import ProductFilterDrawer from '@/components/openDrawers/ProductFilterDrawer';
+// redux
 import { useGetProductQuery } from '@/lib/store/services/product';
-import { Space } from '@/utils/overlayer';
-import React, { Suspense, useEffect, useState } from 'react';
-import useQuery from '@/@core/customHooks/useQuery';
 
 const defaultLimit = 8;
 const ProductPage = () => {
@@ -36,7 +38,7 @@ const ProductPage = () => {
   const count = data?.count || 0;
 
   //search query handle
-  const { addQuery, params, removeQuery } = useQuery();
+  const { addQuery, params, deleteQueryAll } = useQuery();
   const categoriesList = params?.get('categories')?.split(',') || [];
   const searchTermQuery = params?.get('searchTerm') || '';
   useEffect(() => {
@@ -58,23 +60,25 @@ const ProductPage = () => {
   return (
     <div>
       <div className="flex flex-1 space-x-4 ">
+        {/* sidebar hidden in mobile */}
         <div className=" hidden lg:flex relative ">
           <div className=" lg:w-80 h-full overflow-y-auto px-4 py-4">
             <ProductFilterSidebar
               categoriesList={categoriesList}
               addQuery={addQuery}
-              removeQuery={removeQuery}
+              deleteQueryAll={deleteQueryAll}
             />
           </div>
           <div className="absolute right-0 h-full border border-border"></div>
         </div>
         <Space className="w-full py-4">
           <div className="w-full flex items-center justify-between lg:justify-end">
+            {/* side drawer, large device hidden */}
             <div className="lg:hidden">
               <ProductFilterDrawer
                 categoriesList={categoriesList}
                 addQuery={addQuery}
-                removeQuery={removeQuery}
+                deleteQueryAll={deleteQueryAll}
               />
             </div>
             <SortByPrice />

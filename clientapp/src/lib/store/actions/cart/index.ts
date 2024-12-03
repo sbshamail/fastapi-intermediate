@@ -1,4 +1,4 @@
-import { ProductDataType } from '@/utils/interfaces/schemaTypes';
+import { ProductDataType } from '@/utils/interfaces/responseTypes/responseTypes';
 import { CartDataType } from '../../interfaces';
 
 export const Add_Item = (

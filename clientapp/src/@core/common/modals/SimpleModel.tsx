@@ -57,7 +57,7 @@ const SimpleModal: FC<Props> = ({
   return (
     <div className="relative">
       {open && (
-        <div className="fixed inset-0 h-screen w-full flex items-center justify-center z-popOver ">
+        <div className="fixed inset-0 h-screen w-full flex items-center justify-center z-modal ">
           <div className="absolute inset-0 bg-black/60 z-10 backdrop-blur"></div>
           <div ref={clickOutside ? divRef : null} className="w-full z-10 ">
             <div className="w-full max-w-5xl mx-auto">

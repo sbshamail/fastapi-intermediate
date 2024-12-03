@@ -23,3 +23,7 @@ export const setReducer = <T>(name: string) => {
   const { setData } = myReducer.actions;
   return setData;
 };
+// how to work
+//save on reducer first "name: generateReducer<[]>('name').reducer,"
+// const setName = setReducer('name');
+// dispatch(setName(data))

@@ -6,7 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
+// import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
 import { CustomLink } from '@/@core/tag/CustomLink';
 
@@ -17,11 +17,11 @@ const MyCarousel: FC<Props> = ({ data }) => {
   return (
     <div className="w-full  -mt-6 !p-0 ">
       <Carousel
-        plugins={[
-          Autoplay({
-            delay: 2000,
-          }),
-        ]}
+      // plugins={[
+      //   Autoplay({
+      //     delay: 2000,
+      //   }),
+      // ]}
       >
         <CarouselContent>
           {data.map((item, index) => (

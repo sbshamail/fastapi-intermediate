@@ -1,18 +1,19 @@
 'use client';
 import React, { FC } from 'react';
 //
-import TextField from '../textField/TextField';
-import Button from '../button';
-import Checkbox from '../textField/Checkbox';
+
 import Iconify from '@/@core/common/icon';
-import { loginSchema, loginTypes } from '@/utils/formTypes/formTypes';
+import { loginSchema, loginTypes } from '@/utils/interfaces/formTypes/authformTypes';
 import { useReactForm } from '@/@core/packages/reactHookForm/useReactForm';
+import TextField from '../textField/TextField';
+import Checkbox from '../textField/Checkbox';
+import Button from '../button';
 
 interface PropsType {
   removeSelection: () => void;
 }
 
-const LoginForm: FC<PropsType> = ({ removeSelection }) => {
+const SampleLoginForm: FC<PropsType> = ({ removeSelection }) => {
   const { register, handleSubmit, errors, reset } =
     useReactForm<loginTypes>(loginSchema);
 
@@ -69,4 +70,4 @@ const LoginForm: FC<PropsType> = ({ removeSelection }) => {
   );
 };
 
-export default LoginForm;
+export default SampleLoginForm;

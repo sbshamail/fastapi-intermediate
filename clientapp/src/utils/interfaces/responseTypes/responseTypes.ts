@@ -38,3 +38,15 @@ export interface ReviewsDataType {
   };
   description?: string;
 }
+
+export interface AuthResponseType {
+  access_token: string;
+  refresh_token: string;
+  exp: string;
+  user: {
+    id: string;
+    email: string;
+    username: string;
+    phone: string;
+  };
+}

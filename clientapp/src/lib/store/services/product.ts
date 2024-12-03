@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { api } from '../../../../config';
-import { ProductDataType } from '@/utils/interfaces/schemaTypes';
+import { nextapi } from '../../../../config';
+import { ProductDataType } from '@/utils/interfaces/responseTypes/responseTypes';
 
 // convert params into query
 export const toQueryString = (params = {}) => {
@@ -16,7 +16,7 @@ export const toQueryString = (params = {}) => {
 
 export const productApi = createApi({
   reducerPath: 'product',
-  baseQuery: fetchBaseQuery({ baseUrl: api }),
+  baseQuery: fetchBaseQuery({ baseUrl: nextapi }),
   refetchOnMountOrArgChange: 0,
   endpoints: (builder) => ({
     // getProduct is main variable (useGetProductQuery)
@@ -31,7 +31,7 @@ export const productApi = createApi({
     >({
       query: (params) => {
         const query = toQueryString(params);
-        console.log(query);
+        // console.log(query);
         return {
           url: `/product?${query}`,
           method: 'GET',

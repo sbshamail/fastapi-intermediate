@@ -1,4 +1,4 @@
-import { ProductDataType } from '../interfaces/schemaTypes';
+import { ProductDataType } from '../interfaces/responseTypes/responseTypes';
 
 export const products: ProductDataType[] = [
   {

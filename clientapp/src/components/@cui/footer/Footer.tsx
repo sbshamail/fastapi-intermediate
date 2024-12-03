@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { CustomLink } from '@/@core/tag/CustomLink';
 import Image from 'next/image';
 import SocialIcons from '@/components/action/SocialIcons/SocialIcons';
-import Screen from '@/utils/overlayer';
+import Screen from '@/app/overlayer';
 import { DataType, FooterDataType } from '@/utils/contents/footerList';
 import Card from '@/@core/tag/Card';
 

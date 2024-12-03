@@ -26,7 +26,10 @@ const Account = () => {
   ];
   return (
     <>
-      <LoginModalCard open={isModalOpen} handleModal={handleModal} />
+      <LoginModalCard
+        open={isModalOpen}
+        closeModal={() => handleModal(false)}
+      />
       <div className="flex">
         <IconDropdown
           icon="material-symbols:person-outline"

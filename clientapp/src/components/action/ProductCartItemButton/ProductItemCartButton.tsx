@@ -1,11 +1,11 @@
 'use client';
 import React, { FC, useEffect, useState } from 'react';
 import { useAppSelector } from '@/lib/store/hooks/hooks';
-import { ProductDataType } from '@/utils/interfaces/schemaTypes';
+import { ProductDataType } from '@/utils/interfaces/responseTypes/responseTypes';
 import { CartDataType } from '@/lib/store/interfaces';
 
 // action
-import { post } from '@/utils/action/function';
+import { fetchPost } from '@/utils/action/function';
 import { useAppDispatch } from '@/lib/store/hooks/hooks';
 import { setReducer } from '@/lib/store/common/action-reducer';
 //
@@ -19,7 +19,7 @@ export const ProductItemCartButton: FC<Props> = ({ item, children }) => {
   const [cartData, setCartData] = useState<CartDataType[]>([]);
   const setCart = setReducer('cart');
   const handlePostCart = async (item: any) => {
-    const res: any = await post({
+    const res: any = await fetchPost({
       data: item,
       route: `cart`,
       dispatch,

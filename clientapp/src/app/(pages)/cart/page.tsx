@@ -1,10 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Screen from '@/utils/overlayer';
+import Screen from '@/app/overlayer';
 import { useAppSelector } from '@/lib/store/hooks/hooks';
 
 import { CartDataType } from '@/lib/store/interfaces';
-import { currency } from '@/utils/functions';
+import { currency } from '@/utils/helper';
 
 import Button from '@/components/@cui/button';
 import DesktopCartScreen from '@/components/cartScreen/DesktopCartScreen';
@@ -12,7 +12,7 @@ import MobileCartScreen from '@/components/cartScreen/MobileCartScreen';
 import { FixedBottomBar } from '@/components/@cui/layout/fixedBottomBar';
 import MobileBottomFixed from '@/components/layout/mobileBottomFixed/MobileBottomFixed';
 // action
-import { post, put, remove, getData } from '@/utils/action/function';
+import { fetchPost, put, remove, getData } from '@/utils/action/function';
 import { useAppDispatch } from '@/lib/store/hooks/hooks';
 
 import { setReducer } from '@/lib/store/common/action-reducer';
@@ -91,7 +91,7 @@ const Cart = () => {
 
   // cart action
   const handlePostCart = async (item: any) => {
-    const res = await post({
+    const res = await fetchPost({
       data: item,
       route: `cart`,
       dispatch: dispatch,

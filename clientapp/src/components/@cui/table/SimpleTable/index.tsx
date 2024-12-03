@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { formatDate } from '@/utils/functions';
+import { formatDate } from '@/utils/helper';
 type column = {
   accessor: string | '';
   title?: string | number | Date | any;

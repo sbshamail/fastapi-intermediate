@@ -4,7 +4,7 @@ import { CartDataType } from '@/lib/store/interfaces';
 import Image from 'next/image';
 import React, { FC, ReactNode } from 'react';
 import { PriceAndSalePrice } from '../@cui/ecommerce-component/PriceAndSalePrice';
-import { currency } from '@/utils/functions';
+import { currency } from '@/utils/helper';
 import Iconify from '@/@core/common/icon';
 import Button from '../@cui/button';
 import ItemAddRemoveQuantity from '../itemAddRemoveQuantity';

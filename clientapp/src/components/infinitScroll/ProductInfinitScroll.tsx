@@ -1,9 +1,9 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
+import { InView } from 'react-intersection-observer';
 import ProductItemCard from '@/components/card/ProductItemCard';
 import ProductCardSkeleton from '../@cui/skeleton/ProductCardSkeleton';
-import { InView } from 'react-intersection-observer';
-import { ProductDataType } from '@/utils/interfaces/schemaTypes';
+import { ProductDataType } from '@/utils/interfaces/responseTypes/responseTypes';
 
 interface Props {
   data: ProductDataType[];

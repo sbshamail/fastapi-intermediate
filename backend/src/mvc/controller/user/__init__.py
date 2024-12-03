@@ -1,9 +1,9 @@
-
 import json
 from typing import Any, Dict, List, Optional
 from fastapi import HTTPException
 
 from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 from sqlalchemy import or_
 from sqlalchemy.orm.session import Session
 
@@ -16,8 +16,10 @@ from src.utils.operation import createop, updateOp, listop, filterRefactoring
 # auth
 from .auth_dependency import exist_user
 
+
 # on first user create role
-def first_user_create_role(db: Session,user):
+def first_user_create_role(db: Session, user):
+
     if db.query(User).count() == 0:
         # Create the "admin" role if it's the first user
         admin_role = Role(id=1, name="admin", permissions=["all"])
@@ -28,31 +30,33 @@ def first_user_create_role(db: Session,user):
         # Assign the "admin" role to the user being created
         role_id = admin_role.id
         # user.id = 1
-        
+
     else:
         # Assign the default role (if it's not the first user)
         role_id = 2
     return role_id
-    
+
+
 ## Create User Function ##
 def create(db: Session, request: UserBase):
+
     db_user = exist_user(db, email=request.email)
     if db_user:
-        raise HTTPException(status_code=400, detail="this user already exist")
-
-    fields = ["id","username", "email", "phone"]
+        raise HTTPException(status_code=400, detail="This user already exist")
+    print(request)
+    fields = ["firstname", "lastname", "email", "phone"]
     create_doc = createop(User, request, fields)
     create_doc.password = Hash.crypt(request.password)
     # Assign the role_id (either admin or default)
-    create_doc.role_id = first_user_create_role(db,create_doc)  
+    create_doc.role_id = first_user_create_role(db, create_doc)
     db.add(create_doc)
     db.commit()
     db.refresh(create_doc)
     return {
         "data": create_doc,  # The created user
         "message": "User Create Successfully",  # Success message
-     }
- 
+    }
+
 
 def get_user(user: Dict[str, str], db: Session):
     if user is None or user.get("id") is None:
@@ -68,8 +72,10 @@ def list(
     skip: int,
     limit: int,
 ):
-    searchTermFields=["username", "email", "phone"]
-    filters = filterRefactoring(searchTerm, columnSearchTerms, dateRange,searchTermFields)
+    searchTermFields = ["firstname", "lastname", "email", "phone"]
+    filters = filterRefactoring(
+        searchTerm, columnSearchTerms, dateRange, searchTermFields
+    )
     results = listop(db, User, filters, skip, limit)
     return results
 
@@ -82,10 +88,10 @@ def update(db: Session, auth: Dict[str, Any], request: UserBase):
     instance = db.query(User).filter(User.id == id).first()
 
     # Update only the fields that are provided in the request
-    update_fields = ["phone", "username", "email"]
+    update_fields = ["phone", "firstname", "lastname", "email"]
     updateOp(instance, request, update_fields)
-    if(request.password):
-         instance.password = Hash.crypt(request.password)
+    if request.password:
+        instance.password = Hash.crypt(request.password)
     # Commit the changes
     db.commit()
 
@@ -94,7 +100,7 @@ def update(db: Session, auth: Dict[str, Any], request: UserBase):
     return {
         "data": instance,
         "message": "Update User Successfully",  # Success message
-     }
+    }
 
 
 def update_by_admin(db: Session, id: int, request: UserBase):
@@ -103,7 +109,7 @@ def update_by_admin(db: Session, id: int, request: UserBase):
         raise HTTPException(status_code=401, detail="Item not found.")
 
     # Update only the fields that are provided in the request
-    update_fields = ["phone", "username", "email", "role_id"]
+    update_fields = ["phone", "firstname", "lastname", "email", "role_id"]
     updateOp(item, request, update_fields)
 
     # Commit the changes
@@ -115,13 +121,14 @@ def update_by_admin(db: Session, id: int, request: UserBase):
     return {
         "data": item,
         "message": "Update User Successfully",  # Success message
-     }
+    }
 
 
 def read(
     db: Session,
     id: Optional[int] = None,
-    username: Optional[str] = None,
+    firstname: Optional[str] = None,
+    lastname: Optional[str] = None,
     email: Optional[str] = None,
 ):
     filters = []
@@ -129,17 +136,20 @@ def read(
         filters.append(User.id == id)
     if email:
         filters.append(User.email.like(f"%{email}%"))
-    if username:
-        filters.append(User.username.like(f"%{username}%"))
+    if firstname:
+        filters.append(User.firstname.like(f"%{firstname}%"))
+
+    if lastname:
+        filters.append(User.lastname.like(f"%{lastname}%"))
 
     item = db.query(User).filter(or_(*filters)).first()
 
-    if item is None or id is None and username is None and email is None:
+    if item is None:
         raise HTTPException(status_code=404, detail="Item not found.")
     return {
         "data": item,
         "message": "ok",  # Success message
-     }
+    }
 
 
 def read_many(db: Session, ids: List[int]):

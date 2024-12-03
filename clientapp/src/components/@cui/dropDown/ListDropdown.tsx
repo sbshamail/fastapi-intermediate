@@ -3,7 +3,7 @@ import React, { FC, ReactNode, useState } from 'react';
 import { CustomLink } from '@/@core/tag/CustomLink';
 import Iconify from '@/@core/common/icon';
 import { usePathname } from 'next/navigation';
-import { CategoryDataType } from '@/utils/interfaces/schemaTypes';
+import { CategoryDataType } from '@/utils/interfaces/responseTypes/responseTypes';
 
 interface itemComponentsProps {
   item: CategoryDataType;

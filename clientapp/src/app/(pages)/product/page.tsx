@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Screen } from '@/utils/overlayer';
+import { Screen } from '@/app/overlayer';
 
 import ProductPage from '@/_ClientPages/ProductPage';
 // import { getData } from '@/utils/action/function';

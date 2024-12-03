@@ -1,4 +1,4 @@
-import { ReviewsDataType } from '../interfaces/schemaTypes';
+import { ReviewsDataType } from '../interfaces/responseTypes/responseTypes';
 
 export const reviewsList: ReviewsDataType[] = [
   {

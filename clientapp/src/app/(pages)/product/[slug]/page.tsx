@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import Screen from '@/utils/overlayer';
+import Screen from '@/app/overlayer';
 import Iconify from '@/@core/common/icon';
-import { Space } from '@/utils/overlayer';
+import { Space } from '@/app/overlayer';
 // component
 import { PriceAndSalePrice } from '@/components/@cui/ecommerce-component/PriceAndSalePrice';
 import StarRating from '@/components/@cui/ecommerce-component/starRating';
@@ -16,7 +16,6 @@ import { reviewsList } from '@/utils/contents/reviewsList';
 import { getData } from '@/utils/action/function';
 // interfaces
 import { CartDataType } from '@/lib/store/interfaces';
-// import { SlugParamsType } from '@/utils/interfaces/commonTypes';
 import RelatedProductContainer from '@/components/container/RelatedProductContainer';
 import SwiperImageCard from '@/components/@cui/card/ecommerce/SwiperImageCard';
 

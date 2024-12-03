@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import ProductCard from '@cui/card/ecommerce/ProductCard';
-import { ProductDataType } from '@/utils/interfaces/schemaTypes';
-import { generateSlug } from '@/utils/functions';
+import { ProductDataType } from '@/utils/interfaces/responseTypes/responseTypes';
+import { generateSlug } from '@/utils/helper';
 import { ProductTags } from '@cui/ecommerce-component/ProductTags';
 import { ProductItemCartButton } from '../action/ProductCartItemButton/ProductItemCartButton';
 interface Props {

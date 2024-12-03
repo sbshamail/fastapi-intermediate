@@ -1,2 +1,3 @@
 export const domain = process.env.domain;
-export const api = process.env.api ?? process.env.NEXT_PUBLIC_API;
+export const authapi = process.env.authapi ?? process.env.NEXT_PUBLIC_AUTHAPI;
+export const nextapi = process.env.nextapi ?? process.env.NEXT_PUBLIC_NEXTAPI;

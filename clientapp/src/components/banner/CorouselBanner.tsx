@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import Screen from '@/utils/overlayer';
+import Screen from '@/app/overlayer';
 import MyCarousel from '../carousel/MyCarousel';
 import { carousalData } from '@/utils/contents/maincarousal';
 const CorouselBanner = () => {
@@ -9,7 +9,7 @@ const CorouselBanner = () => {
       <Screen>
         <div className=" flex items-center">
           <div className=" lg:w-[25%] xl:[20%] lg:ml-10 xl:ml-0"></div>
-          <MyCarousel data={carousalData} />
+          {/* <MyCarousel data={carousalData} /> */}
         </div>
       </Screen>
     </div>

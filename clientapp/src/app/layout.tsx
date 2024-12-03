@@ -4,7 +4,7 @@ import { Inter, Montserrat } from 'next/font/google';
 //
 import ThemeProvider from '@/@core/theme/themeContext';
 import Layout from '@/components/layout';
-import StoreProvider from './StoreProvider';
+import StoreProvider from './providers/StoreProvider';
 import { Toaster } from 'react-hot-toast';
 import './globals.css';
 

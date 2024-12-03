@@ -10,7 +10,7 @@ import Shadow from '@/@core/tag/Shadow';
 import Iconify from '@/@core/common/icon';
 import { usePathname, useRouter } from 'next/navigation';
 import { CustomLink } from '@/@core/tag/CustomLink';
-import { CategoryDataType } from '@/utils/interfaces/schemaTypes';
+import { CategoryDataType } from '@/utils/interfaces/responseTypes/responseTypes';
 import useGetWindow from '@/@core/customHooks/useGetWindow';
 import { categoriesTrigger } from '@/components/layout/navbar/midNavbar/function';
 

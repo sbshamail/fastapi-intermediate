@@ -1,5 +1,6 @@
-import { api } from '../../../config';
+import { nextapi, authapi } from '../../../config';
 import toast from 'react-hot-toast';
+
 import {
   GetType,
   PostType,
@@ -7,6 +8,7 @@ import {
   RemoveAllType,
   RemoveType,
 } from './interface';
+import { pickObj } from '../helper';
 
 export const getData = async ({
   route,
@@ -14,11 +16,11 @@ export const getData = async ({
   revalidate,
   dispatch,
 }: GetType) => {
-  if (!api) {
+  if (!nextapi) {
     console.error('API base URL is not defined.');
     return false;
   }
-  const baseUrl = `${api}/${route}`;
+  const baseUrl = `${nextapi}/${route}`;
   try {
     const response = await fetch(baseUrl, {
       next: {
@@ -40,7 +42,18 @@ export const getData = async ({
   }
 };
 
-export const post = async ({ data, route, dispatch, fetchData }: PostType) => {
+export const fetchPost = async ({
+  data,
+  route,
+  dispatch,
+  fetchData,
+  app,
+  reset,
+  removeSelection,
+  position = 'top-center',
+  pickValues,
+}: PostType) => {
+  const api = app === 'authapp' ? authapi : 'nextapi';
   const baseUrl = `${api}/${route}`;
   try {
     const response = await fetch(baseUrl, {
@@ -53,24 +66,33 @@ export const post = async ({ data, route, dispatch, fetchData }: PostType) => {
 
     // Check if response is ok
     if (!response.ok) {
-      toast.error('Cart is Empty', { position: 'top-center' });
-      return { error: response.status };
-      // throw new Error(`HTTP error! Status: ${response.status}`);
+      const error = await response.json();
+      toast.error(error.detail, {
+        position: 'top-center',
+      });
     }
 
-    const result = await response.json(); // Parse the JSON response
+    let result = await response.json(); // Parse the JSON response
+    if (pickValues) {
+      result = pickObj(result, pickValues);
+    }
     if (dispatch) {
       dispatch(fetchData(result));
     }
-    return { data: result };
+    if (reset) {
+      reset();
+    }
+    if (removeSelection) {
+      removeSelection();
+    }
+    return result;
   } catch (error) {
-    console.error('Error posting data:', error);
-    return toast.error('error', { position: 'top-center' });
+    console.log('Error posting data:', error);
   }
 };
 
 export const put = async ({ data, route, dispatch, fetchData }: PutType) => {
-  const baseUrl = `${api}/${route}`;
+  const baseUrl = `${nextapi}/${route}`;
   try {
     const response = await fetch(baseUrl, {
       method: 'PUT',
@@ -96,7 +118,7 @@ export const put = async ({ data, route, dispatch, fetchData }: PutType) => {
 };
 
 export const remove = async ({ route, dispatch, fetchData }: RemoveType) => {
-  const baseUrl = `${api}/${route}`;
+  const baseUrl = `${nextapi}/${route}`;
   try {
     const response = await fetch(baseUrl, {
       method: 'DELETE',
@@ -125,7 +147,7 @@ export const removeAll = async ({
   dispatch,
   fetchData,
 }: RemoveAllType) => {
-  const baseUrl = `${api}/${route}`;
+  const baseUrl = `${nextapi}/${route}`;
   try {
     const response = await fetch(baseUrl, {
       method: 'DELETE',

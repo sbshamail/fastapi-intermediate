@@ -17,28 +17,29 @@ interface Props {
 const Layout: FC<Props> = ({ children }) => {
   return (
     <div>
-      <div className="">
-        <HeaderClientLayout>
-          <Navbar />
-          <div className="pt-4 p-2 h-min  ">
-            <MidNavbar />
-          </div>
-        </HeaderClientLayout>
-        {/* main-content id is use for mobile FixedBottomBar space  */}
-        <div id="main-content">
-          <main>{children}</main>
-          <IfPathname path="/cart" className="hidden md:block">
-            <div className="m-0 p-0 pt-20">
-              <Footer
-                data={footerList}
-                title="Market"
-                description="Small, artisan label that offers a thoughtfully curated collection of high quality everyday essentials made."
-              />
-              <Endbar />
+      <div className="min-h-screen flex flex-col justify-between">
+        <div>
+          <HeaderClientLayout>
+            <Navbar />
+            <div className="pt-4 p-2 h-min  ">
+              <MidNavbar />
             </div>
-          </IfPathname>
+          </HeaderClientLayout>
+          {/* main-content id is use for mobile FixedBottomBar space  */}
+          <div id="main-content">
+            <main>{children}</main>
+          </div>
         </div>
-
+        <div className="hidden md:block">
+          <div className="m-0 p-0 pt-20 ">
+            <Footer
+              data={footerList}
+              title="Market"
+              description="Small, artisan label that offers a thoughtfully curated collection of high quality everyday essentials made."
+            />
+          </div>
+          <Endbar />
+        </div>
         <FixedBottomBar>
           <IfPathname path="/cart">
             <MobileBottomFixed />

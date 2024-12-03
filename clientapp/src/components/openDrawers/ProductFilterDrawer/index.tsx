@@ -7,12 +7,12 @@ import ProductFilterSidebar from '@/components/sidebar/ProductFilterSidebar';
 interface Props {
   categoriesList: string[];
   addQuery: any;
-  removeQuery: () => void;
+  deleteQueryAll: () => void;
 }
 const ProductFilterDrawer = ({
   categoriesList = [],
   addQuery,
-  removeQuery,
+  deleteQueryAll,
 }: Props) => {
   const [open, setOpen] = useState(false);
   return (
@@ -27,7 +27,7 @@ const ProductFilterDrawer = ({
           <ProductFilterSidebar
             categoriesList={categoriesList}
             addQuery={addQuery}
-            removeQuery={removeQuery}
+            deleteQueryAll={deleteQueryAll}
           />
         </div>
       </Drawer>

@@ -1,9 +1,11 @@
 'use client';
+import { ClassNameType } from '@/utils/interfaces/commonTypes';
 import React, { ChangeEvent, KeyboardEvent, FC } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
   label?: string;
+  labelClass?: ClassNameType;
   required?: boolean;
   type?: string;
   name?: string;
@@ -46,7 +48,8 @@ const TextField: FC<Props> = ({
   min,
   minLength,
   size,
-  inputSize,
+  labelClass = 'text-sm mb-1',
+  inputSize = '1',
   rows = 4,
   // For React Hook Form compatibility
   register,
@@ -72,7 +75,7 @@ const TextField: FC<Props> = ({
     onChange,
     onKeyDown,
     className,
-    type,
+    type: type == 'tel' ? 'number' : type,
     maxLength: maxlength,
     max,
     min,
@@ -83,14 +86,14 @@ const TextField: FC<Props> = ({
   // register is react hook field
   register ? (inputProps = { ...inputProps, ...register(name) }) : inputProps;
   const mergedClassName = twMerge(
-    `${InputSize} outline-none bordering ${errors && name && errors[name] && 'border !border-red-500'}`,
+    `${InputSize} outline-none bordering ${errors && name && errors[name] && 'border !border-red-500'} ${type == 'tel' ? 'input-textfield' : ''}`,
     className
   );
   return (
     <>
       <div className="flex items-start flex-col">
         {label && (
-          <label>
+          <label className={labelClass}>
             {label} &nbsp;
             {required && <span>*</span>}
           </label>

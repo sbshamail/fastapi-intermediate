@@ -1,5 +1,8 @@
 import React from 'react';
-import { ChildrenTypes, ClassNameTypes } from '../interfaces/commonTypes';
+import {
+  ChildrenTypes,
+  ClassNameTypes,
+} from '../../utils/interfaces/commonTypes';
 
 export const Screen: React.FC<ChildrenTypes> = ({ children }) => {
   return (

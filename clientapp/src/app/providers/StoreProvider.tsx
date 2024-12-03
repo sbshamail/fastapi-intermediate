@@ -2,7 +2,7 @@
 import { useRef } from 'react';
 import { Provider } from 'react-redux';
 import { makeStore, AppStore } from '@/lib/store/store';
-// import { PersistGate } from 'redux-persist/integration/react';
+import { PersistGate } from 'redux-persist/integration/react';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 export default function StoreProvider({
@@ -21,9 +21,9 @@ export default function StoreProvider({
 
   return (
     <Provider store={storeRef.current}>
-      {/* <PersistGate loading={null} persistor={storeRef.current.persistor}> */}
+      <PersistGate loading={null} persistor={storeRef.current.persistor}>
       {children}
-      {/* </PersistGate> */}
+      </PersistGate>
     </Provider>
   );
 }

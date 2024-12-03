@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { getData } from '@/utils/action/function';
-import { ProductDataType } from '@/utils/interfaces/schemaTypes';
+import { ProductDataType } from '@/utils/interfaces/responseTypes/responseTypes';
 
 import ProductItemCard from '../card/ProductItemCard';
 

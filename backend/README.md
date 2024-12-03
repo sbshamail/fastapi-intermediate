@@ -74,8 +74,7 @@ poetry run alembic upgrade head
 ```cli
 poetry add pytest #package install
 poetry run pytest
-# print is working with flag s
-poetry run pytest -s
+# flag -v(show passed failed) -s(show print value)
 ```
 
 ## alembic recreate

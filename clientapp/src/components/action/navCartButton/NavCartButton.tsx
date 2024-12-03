@@ -14,7 +14,7 @@ import {
 } from '@/@core/common/popOver/PopOver';
 import Shadow from '@/@core/tag/Shadow';
 import Button from '../../@cui/button';
-import { currency } from '@/utils/functions';
+import { currency } from '@/utils/helper';
 import { CartDataType } from '@/lib/store/interfaces';
 // action
 import { setReducer } from '@/lib/store/common/action-reducer';

@@ -8,12 +8,12 @@ import Button from '@/components/@cui/button';
 interface Props {
   categoriesList: string[];
   addQuery: any;
-  removeQuery: () => void;
+  deleteQueryAll: () => void;
 }
 const ProductFilterSidebar = ({
   categoriesList = [],
   addQuery,
-  removeQuery,
+  deleteQueryAll,
 }: Props) => {
   // const { categories } = filters;
 
@@ -34,7 +34,7 @@ const ProductFilterSidebar = ({
   };
   const clearFilter = () => {
     setCategories([]);
-    removeQuery();
+    deleteQueryAll();
   };
   return (
     <div className=" w-full flex flex-col item-center space-y-6">

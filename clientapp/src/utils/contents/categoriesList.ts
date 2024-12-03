@@ -1,4 +1,4 @@
-import { CategoryDataType } from '../interfaces/schemaTypes';
+import { CategoryDataType } from '../interfaces/responseTypes/responseTypes';
 
 export const categoriesList: CategoryDataType[] = [
   {

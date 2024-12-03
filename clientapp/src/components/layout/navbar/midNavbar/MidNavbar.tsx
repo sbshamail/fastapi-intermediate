@@ -1,4 +1,4 @@
-import { Screen } from '@/utils/overlayer';
+import { Screen } from '@/app/overlayer';
 import React from 'react';
 import { Menu } from '../../../@cui/link';
 import { menusList } from '@/utils/contents/menusList';
@@ -7,7 +7,7 @@ import CateDropdown from '@/components/@cui/dropDown/CateDropdown';
 import { categoriesTrigger } from './function';
 import { getData } from '@/utils/action/function';
 const MidNavbar = async () => {
-  const categories = await getData({ route: '/category', revalidate: 3600 });
+  const categories = await getData({ route: 'category', revalidate: 3600 });
 
   // console.log(categories);
 
