@@ -10,6 +10,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@eslint/js": "^9.16.0",
     "@hookform/resolvers": "^3.9.1",
     "@iconify/react": "^5.0.2",
     "@radix-ui/react-slot": "^1.1.0",
@@ -18,8 +19,11 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "embla-carousel-autoplay": "^8.4.0",
     "embla-carousel-react": "^8.4.0",
+    "globals": "^15.13.0",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.460.0",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
@@ -32,15 +36,17 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-filters": "^3.0.0",
+    "typescript-eslint": "^8.17.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
-    "eslint": "^9.15.0",
+    "eslint": "^9.16.0",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",

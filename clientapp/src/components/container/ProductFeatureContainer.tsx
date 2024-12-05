@@ -2,10 +2,10 @@ import { Screen, Space } from '@/app/overlayer';
 import React from 'react';
 import { ProductDataType } from '@/utils/interfaces/responseTypes/responseTypes';
 import ProductItemCard from '../card/ProductItemCard';
-import { getData } from '@/utils/action/function';
+import { fetchGet } from '@/utils/action/function';
 
 const ProductFeatureContainer = async () => {
-  const products = await getData({
+  const products = await fetchGet({
     route: 'product?featured=true',
   });
   return (

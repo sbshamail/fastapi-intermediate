@@ -3,7 +3,7 @@ import { seoTitle } from '@/@core/utils/helperFunctions';
 import { format } from 'date-fns';
 import { parseISO, parse, isValid } from 'date-fns';
 import { dateFormats } from '@/lib/formats';
-// import { fromZonedTime } from "date-fns-tz";
+import { fromZonedTime } from 'date-fns-tz';
 
 export const currency = (amount: number) => {
   return currencyFormatter(amount, 'PKR', 'en-PK') + '.00';
@@ -60,7 +60,10 @@ export const removeUndefined = (data: Record<string, any>) => {
 //   return utcDate.toISOString();
 // }
 
-// export const fromZonetoUtc=(dateStr: string, timeZone: "America/New_York") =>{
+// export const fromZonetoUtc = (
+//   dateStr: string,
+//   timeZone: string = 'America/New_York'
+// ) => {
 //   let utcDateStr;
 
 //   for (const formatStr of dateFormats) {
@@ -75,11 +78,11 @@ export const removeUndefined = (data: Record<string, any>) => {
 //   }
 //   // If no valid format was found, throw an error
 //   if (!utcDateStr) {
-//     throw new Error("Unable to parse date with provided formats");
+//     throw new Error('Unable to parse date with provided formats');
 //   }
 
 //   return utcDateStr;
-// }
+// };
 
 // exampleCamelCaseString to 'Example Camel Case String'
 export const capitalizeCamelSpace = (name: string) => {

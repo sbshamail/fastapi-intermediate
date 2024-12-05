@@ -28,16 +28,19 @@ def authenticate_user(email: str, password: str, db: Session):
 
 
 def create_access_token(
-    user_data: dict, expiry: Optional[timedelta] = None, refresh: Optional[bool] = False
+    user_data: dict,
+    refresh: Optional[bool] = False,
+    expiry: Optional[timedelta] = None,
 ):
+    expiration_time = (
+        datetime.now(timezone.utc)
+        + (expiry if expiry else timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+        if not refresh
+        else None  # If refresh is True, no expiration
+    )
     payload = {
         "user": user_data,
-        "exp": datetime.now(timezone.utc)
-        + (
-            expiry
-            if expiry is not None
-            else timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        ),
+        "exp": expiration_time,
         "refresh": refresh,
     }
 

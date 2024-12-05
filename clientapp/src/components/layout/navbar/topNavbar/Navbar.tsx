@@ -7,7 +7,8 @@ import Iconify from '@/@core/common/icon';
 import ToggleMode from '@/components/@cui/themeToggle/ToggleMode';
 import BreadCrumbs from '@/components/@cui/breadcrumb';
 import NavSearchbar from '@/components/action/searchbar/NavSearchbar';
-import { Suspense } from 'react';
+import { FC, Suspense } from 'react';
+import { UserType } from '@/utils/interfaces/responseTypes/responseTypes';
 
 const toggleModesBulb = () => (
   <Screen>
@@ -18,11 +19,14 @@ const toggleModesBulb = () => (
     </div>
   </Screen>
 );
-const Navbar = () => {
+interface Props {
+  user: UserType;
+  isAuth: boolean;
+}
+const Navbar: FC<Props> = ({ user, isAuth }) => {
   return (
     <div>
       {toggleModesBulb()}
-
       <div>
         <Screen>
           <div className="w-full flex items-center justify-between space-x-4 md:space-x-10">
@@ -45,7 +49,7 @@ const Navbar = () => {
             </div>
             <div className="flex items-center space-x-2">
               <div className="hidden md:flex items-center space-x-2">
-                <Account />
+                <Account user={user} isAuth={isAuth} />
                 <div>|</div>
               </div>
               <RouteIcon

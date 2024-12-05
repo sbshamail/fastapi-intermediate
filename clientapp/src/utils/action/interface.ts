@@ -4,19 +4,21 @@ interface FetchType {
   route: string;
   dispatch?: Dispatch;
   fetchData?: any;
-  app: 'authapp' | 'productapp';
-  reset: () => void;
-  removeSelection: () => void;
+  app?: 'authapp' | 'productapp';
   position?: ToastPosition;
-  pickValues?: string[];
 }
 interface DataType extends FetchType {
   data: Record<string, any>;
 }
 export interface GetType extends FetchType {
   revalidate?: number | undefined;
+  token?: string;
 }
-export interface PostType extends DataType {}
+export interface PostType extends DataType {
+  reset: () => void;
+  removeSelection: () => void;
+  pickValues?: string[];
+}
 export interface PutType extends DataType {}
 export interface RemoveType extends FetchType {}
 export interface RemoveAllType extends FetchType {}

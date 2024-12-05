@@ -5,12 +5,14 @@ import { menusList } from '@/utils/contents/menusList';
 import CategoriesDrawer from '@/components/openDrawers/categoriesDrawer/CategoriesDrawer';
 import CateDropdown from '@/components/@cui/dropDown/CateDropdown';
 import { categoriesTrigger } from './function';
-import { getData } from '@/utils/action/function';
+import { fetchGet } from '@/utils/action/function';
 const MidNavbar = async () => {
-  const categories = await getData({ route: 'category', revalidate: 3600 });
+  const result = await fetchGet({
+    route: 'category',
+    revalidate: 3600,
+  });
 
-  // console.log(categories);
-
+  const categories: any = result;
   return (
     <Screen>
       <div className="flex justify-between items-center">

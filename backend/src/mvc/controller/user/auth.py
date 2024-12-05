@@ -43,7 +43,7 @@ def login(
     refresh_token = create_access_token(
         user_data={"email": user.email, "id": user.id, "role": role},
         refresh=True,
-        expiry=timedelta(days=30),
+        # expiry=timedelta(days=30),
     )
     exp_time = datetime.now(timezone.utc) + timedelta(
         minutes=ACCESS_TOKEN_EXPIRE_MINUTES
@@ -196,6 +196,13 @@ requireRefreshToken = Depends(RefreshTokenBearer())
 def refresh_token(token_details):
     if token_details:
         user_data = token_details["user"]
+        # access_token = create_access_token(
+        #     user_data={
+        #         "email": user_data.email,
+        #         "id": user_data.id,
+        #         "role": user_data.role,
+        #     },
+        # )
         access_token = create_access_token(user_data)
         exp_time = datetime.now(timezone.utc) + timedelta(
             minutes=ACCESS_TOKEN_EXPIRE_MINUTES

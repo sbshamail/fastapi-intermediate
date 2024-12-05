@@ -10,17 +10,24 @@ import { FixedBottomBar } from '../@cui/layout/fixedBottomBar';
 import MobileBottomFixed from './mobileBottomFixed/MobileBottomFixed';
 import HeaderClientLayout from '../clientLayout/HeaderClientLayout';
 import IfPathname from '@/@core/clientSideHandles/IfPathname';
+import { getCookie } from '@/utils/action/cookies';
+import { IsAuth } from '@/utils/action/cookies';
+import { UserType } from '@/utils/interfaces/responseTypes/responseTypes';
 
 interface Props {
   children: React.ReactNode;
 }
-const Layout: FC<Props> = ({ children }) => {
+
+const Layout: FC<Props> = async ({ children }) => {
+  const user: UserType = await getCookie('user');
+  const isAuth: boolean = await IsAuth();
+
   return (
     <div>
       <div className="min-h-screen flex flex-col justify-between">
         <div>
           <HeaderClientLayout>
-            <Navbar />
+            <Navbar user={user} isAuth={isAuth} />
             <div className="pt-4 p-2 h-min  ">
               <MidNavbar />
             </div>

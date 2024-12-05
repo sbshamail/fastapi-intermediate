@@ -1,3 +1,16 @@
+export interface UserType {
+  email: string;
+  id: number;
+  firstname: string;
+  lastname: string | null;
+  phone: string;
+  role: {
+    id: number;
+    name: string;
+    permissions: string[];
+  };
+}
+
 export interface CategoryDataType {
   [key: string]: any;
   icon?: string;

@@ -12,7 +12,7 @@ import MobileCartScreen from '@/components/cartScreen/MobileCartScreen';
 import { FixedBottomBar } from '@/components/@cui/layout/fixedBottomBar';
 import MobileBottomFixed from '@/components/layout/mobileBottomFixed/MobileBottomFixed';
 // action
-import { fetchPost, put, remove, getData } from '@/utils/action/function';
+import { fetchPost, put, remove, fetchGet } from '@/utils/action/function';
 import { useAppDispatch } from '@/lib/store/hooks/hooks';
 
 import { setReducer } from '@/lib/store/common/action-reducer';
@@ -27,7 +27,7 @@ const Cart = () => {
   // useEffect(() => {
   //   if (data?.length === 0) {
   //     const data = async () => {
-  //       const res = await getData({
+  //       const res = await fetchGet({
   //         route: 'cart',
   //         fetchData: setCart,
   //         dispatch,

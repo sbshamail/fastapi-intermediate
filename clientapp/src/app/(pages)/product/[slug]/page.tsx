@@ -13,7 +13,7 @@ import BorderLineTitle from '@/components/@cui/ecommerce-component/BorderLineTit
 import ReviewCard from '@/components/@cui/card/ReviewCard';
 import { reviewsList } from '@/utils/contents/reviewsList';
 // action
-import { getData } from '@/utils/action/function';
+import { fetchGet } from '@/utils/action/function';
 // interfaces
 import { CartDataType } from '@/lib/store/interfaces';
 import RelatedProductContainer from '@/components/container/RelatedProductContainer';
@@ -34,8 +34,8 @@ const page: FC<{ params: SlugParamsType }> = async ({ params }) => {
   const encodedString = slug.substring(lastHyphenIndex + 1);
   const id = decodeURIComponent(encodedString);
   // Example data fetching
-  const cart = await getData({ route: `cart/${id}` });
-  const product = !cart && (await getData({ route: `product/${id}` }));
+  const cart = await fetchGet({ route: `cart/${id}` });
+  const product = !cart && (await fetchGet({ route: `product/${id}` }));
   const item: CartDataType = cart ? cart : product;
   return (
     <div>

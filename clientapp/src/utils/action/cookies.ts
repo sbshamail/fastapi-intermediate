@@ -1,6 +1,9 @@
 'use server';
 
+import { fetchGet } from '@/utils/action/function';
 import { cookies } from 'next/headers';
+import { secretKey } from '../../../config';
+import jwt from 'jsonwebtoken';
 
 type GetCookieName = 'access_token' | 'refresh_token' | 'exp' | 'user';
 
@@ -19,16 +22,17 @@ export async function createCookie(name: string, value: string) {
   //   });
 }
 
-export async function getCookie(name: GetCookieName): Promise<string | null> {
+export async function getCookie(name: GetCookieName): Promise<any> {
   const cookieStore = await cookies();
   const cookie = cookieStore.get(name);
 
   // If the cookie exists, return its value, otherwise return null
   if (cookie) {
     const value = cookie.value;
-    if (typeof value !== 'object') {
-      return cookie.value;
-    }
+
+    // if (typeof value !== 'object') {
+    //   return cookie.value;
+    // }
     try {
       // Attempt to parse the cookie value into an object
       const parseUser = JSON.parse(value);
@@ -46,29 +50,53 @@ export async function getCookie(name: GetCookieName): Promise<string | null> {
 export const deleteCookie = async (name: GetCookieName) => {
   (await cookies()).delete(name);
 };
+// ///////////////// AUTH //////////////////////
 
-export const IsAuth = async () => {
+export const refreshToken = async () => {
+  console.log('=======refresh token');
+  try {
+    const refresh_token = await getCookie('refresh_token');
+    if (refresh_token) {
+      const data = await fetchGet({
+        route: 'refresh_token',
+        app: 'authapp',
+        token: refresh_token,
+      });
+
+      if (data.access_token) {
+        await createCookie('access_token', data.access_token);
+        await createCookie('exp', data.exp);
+        return true;
+      }
+    }
+    return false;
+  } catch (err) {
+    console.log('Error fetching token with refresh_token:', err);
+    return false;
+  }
+};
+
+export const IsAuth = async (): Promise<boolean> => {
   const access_token = await getCookie('access_token');
   const exp = await getCookie('exp');
+
   if (!access_token || !exp) {
-    // If either the access token or exp is missing, consider the user not authenticated
-    console.log('User is not authenticated or token is missing.');
     return false;
+  } else {
+    const expirationDate = new Date(exp);
+
+    const currentTime = new Date();
+    // console.log('zone', Intl.DateTimeFormat().resolvedOptions().timeZone);
+
+    // Check if the current time is greater than the expiration time
+    if (currentTime > expirationDate) {
+      console.log('Token has expired.');
+      const isToken = await refreshToken();
+      return isToken;
+    }
+
+    return true;
   }
-  const expirationDate = new Date(exp);
-
-  // Get the current time in UTC
-  const currentTime = new Date();
-
-  // console.log(expirationDate, currentTime);
-  // Check if the current time is greater than the expiration time
-  if (currentTime > expirationDate) {
-    console.log('Token has expired.');
-    return false;
-  }
-
-  console.log('Token is still valid.');
-  return true;
 };
 
 export const isAdmin = async () => {
@@ -93,5 +121,14 @@ export const isAdmin = async () => {
   }
 
   console.log('Token is still valid.');
+  return true;
+};
+
+export const logout = async () => {
+  await deleteCookie('access_token');
+  await deleteCookie('refresh_token');
+  await deleteCookie('exp');
+  await deleteCookie('user');
+
   return true;
 };

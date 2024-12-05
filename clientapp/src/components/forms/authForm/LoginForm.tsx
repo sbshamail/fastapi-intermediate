@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 //fetching
 import { fetchPost } from '@/utils/action/function';
 //cookie
-import { createCookie } from '@/app/cookies';
+import { createCookie } from '@/utils/action/cookies';
 import { redirect } from 'next/navigation';
 //
 import useQuery from '@/@core/customHooks/useQuery';

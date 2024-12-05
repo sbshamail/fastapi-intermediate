@@ -9,33 +9,46 @@ import {
   RemoveType,
 } from './interface';
 import { pickObj } from '../helper';
-
-export const getData = async ({
+import { getCookie } from '@/utils/action/cookies';
+export const fetchGet = async ({
   route,
+  app,
+  position = 'top-center',
   fetchData,
-  revalidate,
+  revalidate = 0,
   dispatch,
+  token,
 }: GetType) => {
   if (!nextapi) {
     console.error('API base URL is not defined.');
     return false;
   }
-  const baseUrl = `${nextapi}/${route}`;
+  const api = app === 'authapp' ? authapi : nextapi;
+  const baseUrl = `${api}/${route}`;
+  const access_token = await getCookie('access_token');
   try {
     const response = await fetch(baseUrl, {
       next: {
         revalidate: revalidate,
       },
+      headers: {
+        Authorization: `Bearer ${token ? token : access_token}`,
+      },
     });
-    if (response.ok) {
-      const result = await response.json(); // Parse the JSON response
-      if (dispatch) {
-        dispatch(fetchData(result));
-      }
-      return result;
-    } else {
-      return false;
+    // Check if response is ok
+    if (!response.ok) {
+      const error = await response.json();
+      toast.error(error.detail, {
+        position,
+      });
+      return undefined;
     }
+
+    const result = await response.json(); // Parse the JSON response
+    if (dispatch) {
+      dispatch(fetchData(result));
+    }
+    return result;
   } catch (error) {
     console.error('Error Getting Data:', error);
     throw error;
@@ -53,7 +66,7 @@ export const fetchPost = async ({
   position = 'top-center',
   pickValues,
 }: PostType) => {
-  const api = app === 'authapp' ? authapi : 'nextapi';
+  const api = app === 'authapp' ? authapi : nextapi;
   const baseUrl = `${api}/${route}`;
   try {
     const response = await fetch(baseUrl, {
@@ -68,8 +81,9 @@ export const fetchPost = async ({
     if (!response.ok) {
       const error = await response.json();
       toast.error(error.detail, {
-        position: 'top-center',
+        position,
       });
+      return undefined;
     }
 
     let result = await response.json(); // Parse the JSON response
