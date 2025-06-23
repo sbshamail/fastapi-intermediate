@@ -11,14 +11,6 @@ export interface UserType {
   };
 }
 
-export interface CategoryDataType {
-  [key: string]: any;
-  icon?: string;
-  name: string;
-  link?: string;
-  children?: CategoryDataType[];
-}
-
 export interface ProductDataType {
   id: number | string;
   title: string;
@@ -34,7 +26,7 @@ export interface ProductDataType {
   creationAt?: string;
   updatedAt?: string;
   categoryLink: string;
-  category: CategoryDataType;
+  category: { id?: number | string; name: string };
   sku?: string;
   weight?: number; //weight in gram
 }

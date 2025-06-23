@@ -1,5 +1,4 @@
-import { CategoryDataType } from '../interfaces/responseTypes/responseTypes';
-
+import { CategoryDataType } from '../interfaces/cuiTypes';
 export const categoriesList: CategoryDataType[] = [
   {
     id: 1,

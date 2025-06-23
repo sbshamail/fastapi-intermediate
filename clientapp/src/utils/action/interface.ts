@@ -18,6 +18,7 @@ export interface PostType extends DataType {
   reset: () => void;
   removeSelection: () => void;
   pickValues?: string[];
+  toastMsg?: string;
 }
 export interface PutType extends DataType {}
 export interface RemoveType extends FetchType {}

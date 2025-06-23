@@ -1,10 +1,10 @@
 'use client';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MainSearchbar from '@/components/@cui/searchbar/MainSearchbar';
 import useQuery from '@/@core/customHooks/useQuery';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-const NavSearchbar = () => {
+const ProductSearchbar = () => {
   const [searchEnter, setSearchEnter] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const pathname = usePathname();
@@ -38,4 +38,4 @@ const NavSearchbar = () => {
   );
 };
 
-export default NavSearchbar;
+export default ProductSearchbar;

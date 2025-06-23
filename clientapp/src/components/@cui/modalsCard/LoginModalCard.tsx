@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import SimpleModal from '@/@core/common/modals/SimpleModel';
+import SimpleModal from '@/components/@cui/modals/SimpleModel';
 import Image from 'next/image';
 
 import Button from '../button';

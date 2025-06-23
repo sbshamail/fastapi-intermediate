@@ -2,8 +2,6 @@
 
 import { fetchGet } from '@/utils/action/function';
 import { cookies } from 'next/headers';
-import { secretKey } from '../../../config';
-import jwt from 'jsonwebtoken';
 
 type GetCookieName = 'access_token' | 'refresh_token' | 'exp' | 'user';
 
@@ -30,16 +28,20 @@ export async function getCookie(name: GetCookieName): Promise<any> {
   if (cookie) {
     const value = cookie.value;
 
-    // if (typeof value !== 'object') {
-    //   return cookie.value;
-    // }
-    try {
-      // Attempt to parse the cookie value into an object
-      const parseUser = JSON.parse(value);
-      return parseUser;
-    } catch (error) {
-      // Handle any errors that might occur if the value is not valid JSON
-      console.error('Failed to parse user cookie:', error);
+    // Check if the value is non-empty before attempting to parse
+    if (value && value.trim() !== '') {
+      try {
+        // Attempt to parse the cookie value into an object
+        const parseUser = JSON.parse(value);
+        return parseUser;
+      } catch (error) {
+        // Handle any errors that might occur if the value is not valid JSON
+        console.warn('Failed to parse user cookie:', error);
+      }
+    } else {
+      // Handle the case where the cookie value is empty
+      console.warn('Cookie value is empty or invalid');
+      return null;
     }
   }
 
@@ -89,7 +91,7 @@ export const IsAuth = async (): Promise<boolean> => {
     // console.log('zone', Intl.DateTimeFormat().resolvedOptions().timeZone);
 
     // Check if the current time is greater than the expiration time
-    if (currentTime > expirationDate) {
+    if (expirationDate > currentTime) {
       console.log('Token has expired.');
       const isToken = await refreshToken();
       return isToken;
@@ -100,7 +102,6 @@ export const IsAuth = async (): Promise<boolean> => {
 };
 
 export const isAdmin = async () => {
-  const auth = await IsAuth();
   const access_token = await getCookie('access_token');
   const exp = await getCookie('exp');
   if (!access_token || !exp) {
@@ -121,14 +122,5 @@ export const isAdmin = async () => {
   }
 
   console.log('Token is still valid.');
-  return true;
-};
-
-export const logout = async () => {
-  await deleteCookie('access_token');
-  await deleteCookie('refresh_token');
-  await deleteCookie('exp');
-  await deleteCookie('user');
-
   return true;
 };

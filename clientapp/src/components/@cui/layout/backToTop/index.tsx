@@ -4,8 +4,7 @@ import useGetWindow from '@/@core/customHooks/useGetWindow';
 import React from 'react';
 
 const BackToTop = () => {
-  const { scrollY, height, clientWindow } = useGetWindow(['scroll']);
-
+  const { scrollY, width, height, clientWindow } = useGetWindow(['scroll']);
   const showArrowTop = scrollY > height ? true : false;
   const handleClick = () => {
     clientWindow?.scrollTo({

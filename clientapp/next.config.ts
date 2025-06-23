@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  eslint: {
+    dirs: ['src', 'utils', 'app', 'components', 'lib'], // Example directories to lint
+  },
 };
 
 export default nextConfig;

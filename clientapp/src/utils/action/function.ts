@@ -9,7 +9,8 @@ import {
   RemoveType,
 } from './interface';
 import { pickObj } from '../helper';
-import { getCookie } from '@/utils/action/cookies';
+import { deleteCookie, getCookie } from '@/utils/action/cookies';
+
 export const fetchGet = async ({
   route,
   app,
@@ -65,6 +66,7 @@ export const fetchPost = async ({
   removeSelection,
   position = 'top-center',
   pickValues,
+  toastMsg,
 }: PostType) => {
   const api = app === 'authapp' ? authapi : nextapi;
   const baseUrl = `${api}/${route}`;
@@ -98,6 +100,11 @@ export const fetchPost = async ({
     }
     if (removeSelection) {
       removeSelection();
+    }
+    if (toastMsg || result.message) {
+      toast.error(toastMsg ? toastMsg : result.message, {
+        position,
+      });
     }
     return result;
   } catch (error) {
@@ -182,4 +189,13 @@ export const removeAll = async ({
     console.error('Error deleting cart:', error);
     throw error;
   }
+};
+
+export const logout = async () => {
+  await deleteCookie('access_token');
+  await deleteCookie('refresh_token');
+  await deleteCookie('exp');
+  await deleteCookie('user');
+
+  return true;
 };

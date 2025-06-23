@@ -3,10 +3,10 @@ import React, { FC, ReactNode, useState } from 'react';
 import { CustomLink } from '@/@core/tag/CustomLink';
 import Iconify from '@/@core/common/icon';
 import { usePathname } from 'next/navigation';
-import { CategoryDataType } from '@/utils/interfaces/responseTypes/responseTypes';
+import { ListDropdownDataType } from '@/utils/interfaces/cuiTypes';
 
 interface itemComponentsProps {
-  item: CategoryDataType;
+  item: ListDropdownDataType;
   idName: string;
   isOpen: boolean;
   onClick: (str: string) => void;
@@ -15,6 +15,7 @@ interface itemComponentsProps {
   pathname?: string | null;
   isChildMatch: boolean; //for parent
 }
+// link href is custom link
 const ItemComponent: FC<itemComponentsProps> = ({
   item,
   idName,
@@ -89,7 +90,7 @@ const ItemComponent: FC<itemComponentsProps> = ({
 };
 
 interface Props {
-  data: CategoryDataType[];
+  data: ListDropdownDataType[];
   idName?: string;
 }
 
@@ -106,7 +107,7 @@ const ListDropdown: FC<Props> = ({ data, idName = 'name' }) => {
   };
 
   const checkMatch = (
-    item: CategoryDataType,
+    item: ListDropdownDataType,
     pathname: string | null
   ): boolean => {
     if (item.link === pathname) {
@@ -117,7 +118,7 @@ const ListDropdown: FC<Props> = ({ data, idName = 'name' }) => {
       : false;
   };
   const renderItems = (
-    items: CategoryDataType[],
+    items: ListDropdownDataType[],
     idName: string
   ): ReactNode => {
     return items.map((item) => {

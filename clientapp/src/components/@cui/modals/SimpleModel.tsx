@@ -1,7 +1,7 @@
 'use client';
 import React, { FC, useEffect, useState } from 'react';
 import useClickOutside from '@/@core/customHooks/useClickOutside';
-import Button from '../../../components/@cui/button';
+import Button from '../button';
 import Card from '@/@core/tag/Card';
 
 interface Props {

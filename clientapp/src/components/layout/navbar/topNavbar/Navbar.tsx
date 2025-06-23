@@ -6,7 +6,7 @@ import MenuDrawer from '@/components/openDrawers/menuDrawer/MenuDrawer';
 import Iconify from '@/@core/common/icon';
 import ToggleMode from '@/components/@cui/themeToggle/ToggleMode';
 import BreadCrumbs from '@/components/@cui/breadcrumb';
-import NavSearchbar from '@/components/action/searchbar/NavSearchbar';
+import ProductSearchbar from '@/components/action/searchbar/ProductSearchbar';
 import { FC, Suspense } from 'react';
 import { UserType } from '@/utils/interfaces/responseTypes/responseTypes';
 
@@ -44,10 +44,10 @@ const Navbar: FC<Props> = ({ user, isAuth }) => {
             </div>
             <div className="w-full ">
               <Suspense>
-                <NavSearchbar />
+                <ProductSearchbar />
               </Suspense>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 select-none">
               <div className="hidden md:flex items-center space-x-2">
                 <Account user={user} isAuth={isAuth} />
                 <div>|</div>

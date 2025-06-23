@@ -35,7 +35,7 @@ export const pickObj = (obj: Record<string, any>, keys: any[]) => {
 };
 
 export const removeUndefined = (data: Record<string, any>) => {
-  for (let key in data) {
+  for (const key in data) {
     if (
       data[key] === undefined ||
       data[key] === null ||

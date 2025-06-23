@@ -84,7 +84,9 @@ const TextField: FC<Props> = ({
     rows,
   };
   // register is react hook field
-  register ? (inputProps = { ...inputProps, ...register(name) }) : inputProps;
+  if (register) {
+    inputProps = { ...inputProps, ...register(name) };
+  }
   const mergedClassName = twMerge(
     `${InputSize} outline-none bordering ${errors && name && errors[name] && 'border !border-red-500'} ${type == 'tel' ? 'input-textfield' : ''}`,
     className

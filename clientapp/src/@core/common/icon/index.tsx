@@ -3,7 +3,6 @@ import { Icon, IconProps } from '@iconify/react';
 import { twMerge } from 'tailwind-merge';
 
 interface props extends IconProps {
-  icon: string;
   className?: React.ComponentProps<'div'>['className'];
   fontSize?: string;
   hover?: boolean;

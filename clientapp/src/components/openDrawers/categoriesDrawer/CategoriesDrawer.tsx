@@ -3,10 +3,10 @@ import React, { FC, useState } from 'react';
 import { ChildrenTypes } from '@/utils/interfaces/commonTypes';
 import Drawer from '@/components/@cui/drawer/Drawer';
 import ListDropdown from '@/components/@cui/dropDown/ListDropdown';
-import { CategoryDataType } from '@/utils/interfaces/responseTypes/responseTypes';
+import { ListDropdownDataType } from '@/utils/interfaces/cuiTypes';
 
 interface Props extends ChildrenTypes {
-  categories: CategoryDataType[];
+  categories: ListDropdownDataType[];
 }
 const CategoriesDrawer: FC<Props> = ({ children, categories }) => {
   const [open, setOpen] = useState(false);

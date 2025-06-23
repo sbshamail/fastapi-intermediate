@@ -46,13 +46,14 @@ const LoginForm: FC<PropsType> = ({ removeSelection }) => {
     });
     if (response) {
       const { access_token, refresh_token, exp, user } = response;
-      createCookie('access_token', access_token);
-      createCookie('refresh_token', refresh_token);
-      createCookie('exp', exp);
-      createCookie('user', user);
+      await createCookie('access_token', access_token);
+      await createCookie('refresh_token', refresh_token);
+      await createCookie('exp', exp);
+      await createCookie('user', user);
       const redirectUrl = getQuery('redirect');
+      console.log(redirectUrl);
       if (redirectUrl) {
-        redirect('/');
+        redirect(redirectUrl);
       }
     }
   };

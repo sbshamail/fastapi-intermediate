@@ -17,6 +17,7 @@ export interface ContentItem {
 }
 interface Props {
   icon?: string;
+  customIcon?: () => React.ReactNode;
   contents?: ContentItem[];
   contentId?: string;
   style?: 'dropdown' | 'popover';
@@ -38,6 +39,7 @@ const IconDropdown: FC<Props> = ({
   ],
   contentId = 'title',
   style,
+  customIcon,
 }) => {
   const handleToggle = (click?: () => void) => {
     if (click) {
@@ -49,19 +51,22 @@ const IconDropdown: FC<Props> = ({
       <PopOver style={style} toggle={true}>
         <PopOverTrigger>
           <div className="flex">
-            {icon && (
-              <Iconify
-                fontSize="2rem"
-                icon={icon || 'mdi:call-to-action'}
-                className={`iconPrimary`}
-              />
-            )}
+            {customIcon
+              ? customIcon()
+              : icon && (
+                  <Iconify
+                    fontSize="2rem"
+                    icon={icon || 'mdi:call-to-action'}
+                    className={`iconPrimary`}
+                  />
+                )}
+
             {title && title}
           </div>
         </PopOverTrigger>
         <PopOverContent>
           <Shadow space="0">
-            <div className="flex flex-col  ">
+            <div className="flex flex-col">
               {contents?.map((content: ContentItem, index: number) => (
                 <span
                   key={index}

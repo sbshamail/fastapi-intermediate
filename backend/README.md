@@ -1,43 +1,42 @@
+# Step 1: Set up your environment
+
+## If not already done:
+
 `curl -sSL https://install.python-poetry.org | python3 - --preview`
 
-# export PATH="/home/hamail/.local/bin:$PATH"
+## Then add Poetry to your PATH:
 
-## Links
+`export PATH="/home/hamail/.local/bin:$PATH"`
 
-- `https://python-poetry.org/docs`
-- `https://github.com/panaverse/learn-generative-ai/tree/main/05_microservices_all_in_one_platform/09_create_project`
-- `https://github.com/panaverse/learn-generative-ai/tree/main/05_microservices_all_in_one_platform/10_microservice_helloworld`
+## Step 2: Install dependencies , This installs all packages listed in your pyproject.toml.
 
-- `https://src.tiangolo.com/tutorial`
+`poetry install`
 
-## command to run server
+## Step 3: Enter the Poetry shell
 
-- `poetry run uvicorn src.main:app --host 0.0.0.0 --port 8002`
+`poetry shell`
 
-### hot reload
+## Step 4: Run the FastAPI server
 
-- `--reload`
+`uvicorn src.main:app --host 0.0.0.0 --port 8002 --reload`
 
-## configure poetry that run server with uvicorn directly
+## Step 5: Alembic setup and migrations
 
-```cli
- poetry shell
- uvicorn src.main:app --port 8002 --reload
+```bash
+rm -rf migrations/
+rm alembic.ini
+poetry run alembic init migrations
 ```
 
-# Alembic Commands
+### Update alembic.ini
 
-- install
+`script_location = migrations`
 
-```cli
-poetry run alembic
-poetry run alembic init migration
+### Update migrations/env.py
 
-```
+#### write in envpy
 
-## - in .env.py
-
-```write in envpy
+```bash
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -56,33 +55,25 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 ```
 
-## in - alembic.ini
+## Step 6: Generate & apply migrations
 
-```text
-script_location = migrations
-```
-
-## - commands cli
-
-```cli
-poetry run alembic revision --autogenerate -m "msg"
+```bash
+poetry run alembic revision --autogenerate -m "Initial migration"
 poetry run alembic upgrade head
 ```
 
 ## - test
 
-```cli
+```bash
 poetry add pytest #package install
-poetry run pytest
+poetry run pytest -v -s
 # flag -v(show passed failed) -s(show print value)
 ```
 
-## alembic recreate
+## Links
 
-```cli
-rm -rf migrations/*
-rm alembic.ini
-poetry run alembic init migrations
-poetry run alembic revision --autogenerate -m "Initial migration"
-poetry run alembic upgrade head
-```
+- `https://python-poetry.org/docs`
+- `https://github.com/panaverse/learn-generative-ai/tree/main/05_microservices_all_in_one_platform/09_create_project`
+- `https://github.com/panaverse/learn-generative-ai/tree/main/05_microservices_all_in_one_platform/10_microservice_helloworld`
+
+- `https://src.tiangolo.com/tutorial`

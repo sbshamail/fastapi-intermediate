@@ -66,7 +66,7 @@ const MainSearchbar: FC<Props> = ({
           placeholder={placeholder}
           name={name}
           value={value}
-          className={`${inputSizeClass} relative  !border-none leading-tight active:border-none focus:border-none w-full`}
+          className={`${inputSizeClass}  relative  !border-none leading-tight active:border-none focus:border-none w-full`}
           onChange={onChange}
           onKeyDown={handleKeyDown}
         />

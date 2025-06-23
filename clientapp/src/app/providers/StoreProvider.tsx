@@ -22,7 +22,7 @@ export default function StoreProvider({
   return (
     <Provider store={storeRef.current}>
       <PersistGate loading={null} persistor={storeRef.current.persistor}>
-      {children}
+        {children}
       </PersistGate>
     </Provider>
   );

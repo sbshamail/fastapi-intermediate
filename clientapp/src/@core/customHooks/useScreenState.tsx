@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
-import useGetWindowInnerWidth from './useGetWindow';
+import useGetWindow from './useGetWindow';
 interface Props {
   open: boolean;
   defaultWidth?: number;
@@ -11,12 +11,12 @@ interface returnProps {
   toggleSidebar: () => void;
 }
 const useScreenState = ({ open, defaultWidth = 976 }: Props): returnProps => {
-  const { width } = useGetWindowInnerWidth();
+  const { width } = useGetWindow(['resize']);
   const [isOpen, setIsOpen] = useState<boolean>(open);
   const prevWidthRef = useRef(width);
 
   useEffect(() => {
-    if (typeof window !== undefined && width) {
+    if (width) {
       if (
         width <= defaultWidth &&
         prevWidthRef.current > defaultWidth &&

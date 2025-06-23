@@ -50,6 +50,7 @@ export const currencyFormatter = (
   return formattedValue;
 };
 
+// this is test....
 export const titleSubstring = (
   title: string,
   length: number = 35,
@@ -161,6 +162,9 @@ export function seoTitle(title: string): string {
 // };
 
 // // "item.product._id"
-// export const getNestedProperty = (obj, path) => {
-//   return path.split(".").reduce((acc, part) => acc && acc[part], obj);
-// };
+export const getNestedProperty = (
+  obj: Record<string, any>,
+  propertyKey: string
+) => {
+  return propertyKey.split('.').reduce((acc, part) => acc && acc[part], obj);
+};

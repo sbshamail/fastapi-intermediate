@@ -3,7 +3,10 @@ import React, { FC } from 'react';
 //
 
 import Iconify from '@/@core/common/icon';
-import { loginSchema, loginTypes } from '@/utils/interfaces/formTypes/authformTypes';
+import {
+  loginSchema,
+  LoginTypes,
+} from '@/utils/interfaces/formTypes/authformTypes';
 import { useReactForm } from '@/@core/packages/reactHookForm/useReactForm';
 import TextField from '../textField/TextField';
 import Checkbox from '../textField/Checkbox';
@@ -15,9 +18,9 @@ interface PropsType {
 
 const SampleLoginForm: FC<PropsType> = ({ removeSelection }) => {
   const { register, handleSubmit, errors, reset } =
-    useReactForm<loginTypes>(loginSchema);
+    useReactForm<LoginTypes>(loginSchema);
 
-  const onSubmit = (data: loginTypes) => {
+  const onSubmit = (data: LoginTypes) => {
     // Handle form submission
     console.log('Form submitted successfully', data);
   };

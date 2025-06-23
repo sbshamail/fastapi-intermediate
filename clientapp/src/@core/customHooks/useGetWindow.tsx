@@ -10,7 +10,7 @@ interface returnProps {
 }
 type EventType = 'resize' | 'scroll';
 const useGetWindow = (
-  events?: EventType[],
+  events: EventType[],
   conditionFunc?: (w: Window) => boolean
 ): returnProps => {
   const [width, setWidth] = useState<number>(0);
